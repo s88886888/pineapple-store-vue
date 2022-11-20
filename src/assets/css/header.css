@@ -9,6 +9,12 @@
   float: left;
   margin-right: 100px;
 }
+.el-header .logo img {
+  /* height: 60px; */
+  width: 220px;
+  /* float: left;
+  margin-right: 100px; */
+}
 .el-header .so {
   margin-top: 10px;
   width: 300px;

@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-09 17:12:25
+ * @LastEditTime: 2022-11-20 18:35:13
  * @FilePath: \pineapplestoer_webui\src\views\Details.vue
  * @Description: 
  * 
@@ -130,7 +130,7 @@ export default {
       dis: false, // 控制“加入购物车按钮是否可用”
       productID: "", // 商品id
       productDetails: "", // 商品详细信息
-      productPicture: "" // 商品图片
+      productPicture: "" ,// 商品图片
     };
   },
   // 通过路由获取商品id
@@ -138,6 +138,7 @@ export default {
     if (this.$route.query.productID != undefined) {
       this.productID = this.$route.query.productID;
     }
+
   },
   watch: {
     // 监听商品id的变化，请求后端获取商品数据

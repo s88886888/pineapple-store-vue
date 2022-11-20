@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 03:56:36
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-20 00:33:11
+ * @LastEditTime: 2022-11-20 18:37:37
  * @FilePath: \pineapplestoer_webui\src\views\Login.vue
  * @Description: 登录注册
  * 
@@ -21,7 +21,7 @@
     <div id="right">
       <div id="nav">
         <div class="nav-left">
-          <img src="../assets/image/mi-icon.png" />
+          <img src="../assets/pl_icon.png" />
           <p>账号登录</p>
         </div>
 
@@ -333,7 +333,6 @@ export default {
     });
   },
   watch: {
-
     // resgitToken(val) {
     //   if (val) {
     //     this.phoneCodeShow = !this.phoneCodeShow;
@@ -343,7 +342,6 @@ export default {
     //     this.checkTokenShow = !this.checkTokenShow;
     //   }
     // },
-
   },
   methods: {
     ...mapActions(["setUser"]),
@@ -356,7 +354,7 @@ export default {
         // width: "400",
         success: (resgitToken) => {
           this.resgitToken = resgitToken;
-         this.getPhoneCode();
+          this.getPhoneCode();
         },
       });
       showtime.show();
@@ -436,8 +434,7 @@ export default {
       if (res.code == 4004) {
         return this.$message.error(res.msg);
       }
-      if(res.code == 4005)
-      {
+      if (res.code == 4005) {
         this.tokenshow();
         return this.$message.error(res.msg);
       }
