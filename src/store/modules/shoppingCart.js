@@ -1,19 +1,32 @@
+/*
+ *  ┌─────────────────────────────────────────────────────────────┐
+ *  │┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐│
+ *  ││Esc│!1 │@2 │#3 │$4 │%5 │^6 │&7 │*8 │(9 │)0 │_- │+= │|\ │`~ ││
+ *  │├───┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴───┤│
+ *  ││ Tab │ Q │ W │ E │ R │ T │ Y │ U │ I │ O │ P │{[ │}] │ BS  ││
+ *  │├─────┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴┬──┴─────┤│
+ *  ││ Ctrl │ A │ S │ D │ F │ G │ H │ J │ K │ L │: ;│" '│ Enter  ││
+ *  │├──────┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴─┬─┴────┬───┤│
+ *  ││ Shift  │ Z │ X │ C │ V │ B │ N │ M │< ,│> .│? /│Shift │Fn ││
+ *  │└─────┬──┴┬──┴──┬┴───┴───┴───┴───┴───┴──┬┴───┴┬──┴┬─────┴───┘│
+ *  │      │Fn │ Alt │         Space         │ Alt │Win│   HHKB   │
+ *  │      └───┴─────┴───────────────────────┴─────┴───┘          │
+ *  └─────────────────────────────────────────────────────────────┘
+ * 
+ * @Author: Linson 854700937@qq.com
+ * @Date: 2022-11-06 20:28:48
+ * @LastEditors: Linson 854700937@qq.com
+ * @LastEditTime: 2022-11-22 10:49:13
+ * @FilePath: \pineapplestoer_webui\src\store\modules\shoppingCart.js
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by Linson 854700937@qq.com, All Rights Reserved. 
+ */
+
 
 export default {
   state: {
     shoppingCart: []
-    // shoppingCart结构
-    /* 
-    shoppingCart = {
-      id: "", // 购物车id
-      productID: "", // 商品id
-      productName: "", // 商品名称
-      productImg: "", // 商品图片
-      price: "", // 商品价格
-      num: "", // 商品数量
-      maxNum: "", // 商品限购数量
-      check: false // 是否勾选
-    } */
   },
   getters: {
     getShoppingCart (state) {

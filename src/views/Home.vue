@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-12 01:54:41
+ * @LastEditTime: 2022-11-20 21:41:50
  * @FilePath: \pineapplestoer_webui\src\views\Home.vue
  * @Description: 主页
  * 
@@ -68,6 +68,7 @@
             </p>
           </router-link>
 
+          <!-- <img :src="item.url" /> -->
           <img src="../assets/image/index/shouji/0.jpg" />
         </div>
       </div>
@@ -95,44 +96,7 @@
         </div>
         <!-- 手机商品展示区域END -->
 
-        <!-- 家电商品展示区域 -->
 
-        <!-- <div class="appliance" id="promo-menu">
-        <div class="box-hd">
-            <div class="title">好物推荐</div>
-            <div class="more" id="more">
-              <MyMenu :val="2" @fromChild="getChildMsg">
-                <span slot="1">热门</span>
-                <span slot="2">电视影音</span>
-              </MyMenu>
-            </div>
-          </div>
-          <div class="box-bd">
-            <div class="promo-list">
-              <ul>
-                <li>
-                  <img
-                    :src="
-                      $target + 'public/imgs/appliance/appliance-promo1.png'
-                    "
-                  />
-                </li>
-                <li>
-                  <img
-                    :src="
-                      $target + 'public/imgs/appliance/appliance-promo2.png'
-                    "
-                  />
-                </li>
-              </ul>
-            </div>
-            <div class="list">
-              <MyList :list="hotProductDisplayList" :isMore="true"></MyList>
-            </div>
-          </div>
-        </div> -->
-
-        <!-- 家电商品展示区域END -->
 
         <!-- 配件商品展示区域 -->
         <!-- <div class="accessory" id="promo-menu"> -->

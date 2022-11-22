@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:26:08
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-20 21:34:37
+ * @LastEditTime: 2022-11-21 23:36:47
  * @FilePath: \pineapplestoer_webui\src\router\index.js
  * @Description: 
  * 
@@ -125,6 +125,14 @@ const routes = [
       title:"菠萝商城-登录"
     },
     component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/orderAlipay',
+    name: 'OrderAlipay',
+    meta:{
+      title:"菠萝商城-支付"
+    },
+    component: () => import('../views/orderAlipay.vue')
   }
 ]
 

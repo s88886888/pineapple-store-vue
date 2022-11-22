@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 03:56:36
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-20 18:37:37
+ * @LastEditTime: 2022-11-22 11:59:07
  * @FilePath: \pineapplestoer_webui\src\views\Login.vue
  * @Description: 登录注册
  * 
@@ -347,6 +347,17 @@ export default {
     ...mapActions(["setUser"]),
     //点击验证码实现 弹出挂载人机验证
     tokenshow() {
+      let checkPhone =
+        /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+      if (!checkPhone.test(this.resgitList.phone)) {
+        return this.$message.error("手机号码格式错误！");
+      }
+
+      if(this.checkNameShow)
+      {
+        return this.$message.error("手机已经被注册！");
+      }
+
       var showtime = _dx.Captcha(this.$refs.resgit, {
         appId: "670f56a070bea7d2a1e1939169f4967d",
         apiServer: "https://proxy-api.dingxiang-inc.com",

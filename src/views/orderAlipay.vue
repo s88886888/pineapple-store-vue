@@ -1,4 +1,4 @@
-/*
+<!--
  *  ┌─────────────────────────────────────────────────────────────┐
  *  │┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐│
  *  ││Esc│!1 │@2 │#3 │$4 │%5 │^6 │&7 │*8 │(9 │)0 │_- │+= │|\ │`~ ││
@@ -14,38 +14,41 @@
  *  └─────────────────────────────────────────────────────────────┘
  * 
  * @Author: Linson 854700937@qq.com
- * @Date: 2022-10-20 01:41:22
+ * @Date: 2022-11-21 23:35:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-22 00:05:46
- * @FilePath: \pineapplestoer_webui\vue.config.js
+ * @LastEditTime: 2022-11-22 00:13:30
+ * @FilePath: \pineapplestoer_webui\src\views\orderAlipay.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by Linson 854700937@qq.com, All Rights Reserved. 
- */
-const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
+ -->
 
-module.exports = {
-  publicPath: './',
-  lintOnSave: false,
-  configureWebpack: {
-    
-    //webpack5中移除了nodejs核心模块的polyfill自动引入，所以需要手动引入，如果打包过程中有使用到nodejs核心模块，webpack会提示进行相应配置
-    plugins: [new NodePolyfillPlugin()],
-      //屏蔽node 内置的async_hooks，fs
-    resolve: { fallback: { fs: false ,async_hooks:false } },
+<template>
+  <div>
+    <div>
+      <h1>跳转支付中.................</h1>
+    </div>
+    <div>
+      <div v-html="payGateWay"></div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "OrderAlipay",
+  data() {
+    return {
+      payGateWay: "",
+    };
   },
-  devServer: {
-    open: false,
-    port: 3000,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8081/', // 本地后端地址
-        // target: 'http://121.4.154.210:8081/', // 线上后端地址
-        changeOrigin: true, //允许跨域
-        pathRewrite: {
-          '^/api': ''
-        }
-      }
-    }
-  }
-}
+  mounted() {
+    this.payGateWay = this.$route.query.htmlData;
+    this.$nextTick(() => {
+      document.forms[0].submit();
+    });
+  },
+};
+</script>
+
+<style lang="scss" scoped></style>
