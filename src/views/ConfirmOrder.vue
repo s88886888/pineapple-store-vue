@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-20 01:59:12
+ * @LastEditTime: 2022-11-23 01:30:24
  * @FilePath: \pineapplestoer_webui\src\views\ConfirmOrder.vue
  * @Description: 
  * 
@@ -210,6 +210,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
+import qs from "qs";
 import { mapActions } from "vuex";
 import {
   provinceAndCityData,
@@ -237,6 +238,7 @@ export default {
       addressList: [],
       //隐藏数据后的地址列表
       addressHide: [],
+      demo: "123",
     };
   },
   created() {
@@ -256,7 +258,6 @@ export default {
   watch: {
     addressList(newVal, oldVal) {
       if (newVal.length > 3) {
-
         this.addressMeenShow = true;
         this.addressShow = true;
         this.address = this.addressList;
@@ -295,13 +296,15 @@ export default {
         .catch((_) => {});
     },
 
+    //确认订单
     addOrder() {
       if (this.addressList[this.confirmAddress] == null) {
         this.$message.error("请先选择地址");
         return false;
       }
 
-      this.$axios.post("/api/orders/", {
+      this.$axios
+        .post("/api/orders/", {
           userId: this.$store.getters.getUser.userId,
           receiverName: this.addressList[this.confirmAddress].receiverName,
           receiverMobile: this.addressList[this.confirmAddress].receiverMobile,
@@ -314,21 +317,26 @@ export default {
           productList: this.getCheckGoods,
         })
         .then((res) => {
+
           let products = this.getCheckGoods;
+          
           switch (res.data.code) {
             case 200:
-              for (let i = 0; i < products.length; i++) {
-                const temp = products[i];
-                // 删除已经结算的购物车商品
-                this.deleteShoppingCart(temp.cartId);
-              }
+
+              // for (let i = 0; i < products.length; i++) {
+              //   const temp = products[i];
+              //   // 删除已经结算的购物车商品
+              //   this.deleteShoppingCart(temp.cartId);
+              // }
+
               // 提示结算结果
-              this.$message({
-                message: "购买成功",
-                type: "success",
-              });
+              this.$message.success("成功确定订单，请先支付");
+
               // 跳转我的订单页面
-              this.$router.push({ path: "/order" });
+              // this.$router.push({ path: "/order" });
+              
+              this.alipay(res.data.data.orderId);
+
               break;
             default:
               // 提示失败信息
@@ -386,6 +394,18 @@ export default {
         this.$message.error("区域数据错误！请重新选择区域");
         return false;
       }
+    },
+
+    alipay(orderId) {
+      this.$axios.post("/api/orders/pay", qs.stringify({orderId: orderId })).then((res) => {
+        console.log(res.data.data);
+        let routerData = this.$router.resolve({
+          path: "/orderAlipay",
+          query: { htmlData: res.data.data },
+        });
+        // 打开新页面
+        window.open(routerData.href, "_ blank");
+      });
     },
   },
 };
