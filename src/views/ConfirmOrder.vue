@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-23 01:30:24
+ * @LastEditTime: 2022-11-23 18:05:10
  * @FilePath: \pineapplestoer_webui\src\views\ConfirmOrder.vue
  * @Description: 
  * 
@@ -205,6 +205,23 @@
       </div>
       <!-- 结算导航END -->
     </div>
+
+    <el-dialog
+      title="支付小助手"
+      :visible.sync="checkPay"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <span>请问您是否已经完成支付</span>
+      <!-- <img></img> -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="alipay">继续前往支付</el-button>
+        <el-button type="primary" @click="checkOrderPay"
+          >我已经完成支付</el-button
+        >
+      </span>
+    </el-dialog>
+
     <!-- 主要内容容器END -->
   </div>
 </template>
@@ -238,14 +255,17 @@ export default {
       addressList: [],
       //隐藏数据后的地址列表
       addressHide: [],
-      demo: "123",
+      //跳转支付宝支付的订单
+      payOrderId: "",
+      //检测用户是否真的支付
+      checkPay: false,
     };
   },
   created() {
     // 如果没有勾选购物车商品直接进入确认订单页面,提示信息并返回购物车
     if (this.getCheckNum < 1) {
       this.$message.error("请勾选商品后再结算");
-      this.$router.push({ path: "/shoppingCart" });
+      return this.$router.push({ path: "/shoppingCart" });
     }
 
     this.getUserAddress();
@@ -275,6 +295,14 @@ export default {
   methods: {
     ...mapActions(["deleteShoppingCart"]),
 
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
+        })
+        .catch((_) => {});
+    },
+
     addressListShow() {
       if (this.addressShow) {
         this.addressList = this.addressHide;
@@ -302,6 +330,10 @@ export default {
         this.$message.error("请先选择地址");
         return false;
       }
+      if(this.getCheckGoods.length<0)
+      {
+        return this.$message.error("购物车没有商品");
+      }
 
       this.$axios
         .post("/api/orders/", {
@@ -317,12 +349,10 @@ export default {
           productList: this.getCheckGoods,
         })
         .then((res) => {
+          // let products = this.getCheckGoods;
 
-          let products = this.getCheckGoods;
-          
           switch (res.data.code) {
             case 200:
-
               // for (let i = 0; i < products.length; i++) {
               //   const temp = products[i];
               //   // 删除已经结算的购物车商品
@@ -334,8 +364,11 @@ export default {
 
               // 跳转我的订单页面
               // this.$router.push({ path: "/order" });
-              
-              this.alipay(res.data.data.orderId);
+
+              // console.log(res.data.data.orderId);
+              this.payOrderId = res.data.data.orderId;
+
+              this.alipay();
 
               break;
             default:
@@ -396,17 +429,53 @@ export default {
       }
     },
 
-    alipay(orderId) {
-      this.$axios.post("/api/orders/pay", qs.stringify({orderId: orderId })).then((res) => {
-        console.log(res.data.data);
-        let routerData = this.$router.resolve({
-          path: "/orderAlipay",
-          query: { htmlData: res.data.data },
+    alipay() {
+      if (this.payOrderId == "") {
+        return this.$message.error("未结算订单");
+      }
+
+      this.$axios
+        .post("/api/orders/pay", qs.stringify({ orderId: this.payOrderId }))
+        .then((res) => {
+          if (res.data.code == 200) {
+            let routerData = this.$router.resolve({
+              path: "/orderAlipay",
+              query: { htmlData: res.data.data },
+            });
+            // 打开新页面
+            this.checkPay = true;
+            window.open(routerData.href, "_ blank");
+          } else {
+            this.$message.error(res.data.msg);
+          }
         });
-        // 打开新页面
-        window.open(routerData.href, "_ blank");
+    },
+
+    checkOrderPay() {
+      if (this.payOrderId == "") {
+        return this.$message.error("请您先结算订单");
+      }
+
+      this.$axios.get("/api/orders/getId/" + this.payOrderId).then((res) => {
+        if (res.data.code == 200) {
+          if (res.data.data.status === "1") {
+            return this.$message.error("系统检测到您，未完成支付");
+          } else if (res.data.data.status === "2") {
+            let products = this.getCheckGoods;
+            for (let i = 0; i < products.length; i++) {
+              const temp = products[i];
+              // 删除已经结算的购物车商品
+              this.deleteShoppingCart(temp.cartId);
+            }
+            this.checkPay = false;
+            this.$message.success("恭喜您成功支付");
+            this.$router.push({ path: "/order" });
+          }
+        }
       });
     },
+
+    
   },
 };
 </script>

@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-09 03:43:32
+ * @LastEditTime: 2022-11-23 18:36:42
  * @FilePath: \pineapplestoer_webui\src\views\Order.vue
  * @Description: 我的订单页面组件
  * 
@@ -29,11 +29,12 @@
       <div class="content" v-for="(item, index) in orders" :key="index">
         <ul>
           <!-- 我的订单表头 -->
-          <li class="order-info">
+          <li :class="item.status === '1' ? 'order-info nopay' : 'order-info'">
             <div class="order-id">订单编号: {{ item.orderId }}</div>
             <div class="order-time">
               订单时间: {{ item.createTime | dateFormat }}
             </div>
+            <div class="order-time" v-if="item.status === '1'"><p>未支付</p></div>
           </li>
           <li class="header">
             <div class="pro-img"></div>
@@ -45,7 +46,11 @@
           <!-- 我的订单表头END -->
 
           <!-- 订单列表 -->
-          <li class="product-list" v-for="(product, i) in item.productList" :key="i">
+          <li
+            class="product-list"
+            v-for="(product, i) in item.productList"
+            :key="i"
+          >
             <div class="pro-img">
               <router-link
                 :to="{
@@ -81,7 +86,11 @@
             </span>
           </div>
           <div class="order-bar-right">
+
             <span>
+              <el-button v-if="item.status === '1'" @click="alipay(item.orderId)">支付</el-button>
+              <el-button v-if="item.status === '1'" style="padding-right: 20px">取消</el-button>
+
               <span class="total-price-title">合计：</span>
               <span class="total-price">{{ total[index].totalPrice }}元</span>
             </span>
@@ -104,6 +113,7 @@
   </div>
 </template>
 <script>
+import qs from "qs";
 export default {
   data() {
     return {
@@ -131,7 +141,6 @@ export default {
     orders: function (val) {
       let total = [];
       for (let i = 0; i < val.length; i++) {
-        
         const element = val[i].productList;
 
         let totalNum = 0;
@@ -144,6 +153,30 @@ export default {
         total.push({ totalNum, totalPrice });
       }
       this.total = total;
+    },
+  },
+
+  methods: {
+    alipay(val) {
+      if (val == "") {
+        return this.$message.error("未知订单");
+      }
+
+      this.$axios
+        .post("/api/orders/pay", qs.stringify({ orderId: val }))
+        .then((res) => {
+          if (res.data.code == 200) {
+            let routerData = this.$router.resolve({
+              path: "/orderAlipay",
+              query: { htmlData: res.data.data },
+            });
+            // 打开新页面
+            this.checkPay = true;
+            window.open(routerData.href, "_ blank");
+          } else {
+            this.$message.error(res.data.msg);
+          }
+        });
     },
   },
 };
@@ -205,9 +238,15 @@ export default {
   padding-right: 26px;
   color: #424242;
 }
+
+.nopay {
+  background-color: #ea1558;
+}
+
 /* 我的订单表头CSS END */
 
 /* 订单列表CSS */
+
 .order .content ul .product-list {
   height: 85px;
   padding: 15px 26px 15px 0;
