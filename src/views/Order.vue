@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-23 18:36:42
+ * @LastEditTime: 2022-11-26 02:09:33
  * @FilePath: \pineapplestoer_webui\src\views\Order.vue
  * @Description: 我的订单页面组件
  * 
@@ -29,7 +29,7 @@
       <div class="content" v-for="(item, index) in orders" :key="index">
         <ul>
           <!-- 我的订单表头 -->
-          <li :class="item.status === '1' ? 'order-info nopay' : 'order-info'">
+          <li :class="item.status === '1' ? 'order-info nopay' : (item.status === '6'?'order-info closepay':'order-info') ">
             <div class="order-id">订单编号: {{ item.orderId }}</div>
             <div class="order-time">
               订单时间: {{ item.createTime | dateFormat }}
@@ -241,6 +241,10 @@ export default {
 
 .nopay {
   background-color: #ea1558;
+}
+
+.closepay {
+  background-color: black;
 }
 
 /* 我的订单表头CSS END */

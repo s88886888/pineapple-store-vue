@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-23 18:05:10
+ * @LastEditTime: 2022-11-24 17:52:45
  * @FilePath: \pineapplestoer_webui\src\views\ConfirmOrder.vue
  * @Description: 
  * 
@@ -263,12 +263,11 @@ export default {
   },
   created() {
     // 如果没有勾选购物车商品直接进入确认订单页面,提示信息并返回购物车
+    this.getUserAddress();
     if (this.getCheckNum < 1) {
       this.$message.error("请勾选商品后再结算");
       return this.$router.push({ path: "/shoppingCart" });
     }
-
-    this.getUserAddress();
   },
   computed: {
     // 结算的商品数量; 结算商品总计; 结算商品信息
@@ -295,14 +294,6 @@ export default {
   methods: {
     ...mapActions(["deleteShoppingCart"]),
 
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then((_) => {
-          done();
-        })
-        .catch((_) => {});
-    },
-
     addressListShow() {
       if (this.addressShow) {
         this.addressList = this.addressHide;
@@ -319,6 +310,33 @@ export default {
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then((_) => {
+          this.$axios
+            .get("/api/orders/getId/" + this.payOrderId)
+            .then((res) => {
+              if (res.data.code == 200) {
+                if (res.data.data.status === "1") {
+                  let products = this.getCheckGoods;
+                  for (let i = 0; i < products.length; i++) {
+                    const temp = products[i];
+                    // 删除已经结算的购物车商品
+                    this.deleteShoppingCart(temp.cartId);
+                  }
+                  this.checkPay = false;
+                  this.$message.error("系统检测到您，未完成支付");
+                  return this.$router.push({ path: "/order" });
+                } else if (res.data.data.status === "2") {
+                  let products = this.getCheckGoods;
+                  for (let i = 0; i < products.length; i++) {
+                    const temp = products[i];
+                    // 删除已经结算的购物车商品
+                    this.deleteShoppingCart(temp.cartId);
+                  }
+                  this.checkPay = false;
+                  this.$message.success("恭喜您成功支付");
+                  this.$router.push({ path: "/order" });
+                }
+              }
+            });
           done();
         })
         .catch((_) => {});
@@ -330,8 +348,7 @@ export default {
         this.$message.error("请先选择地址");
         return false;
       }
-      if(this.getCheckGoods.length<0)
-      {
+      if (this.getCheckGoods.length < 0) {
         return this.$message.error("购物车没有商品");
       }
 
@@ -474,8 +491,6 @@ export default {
         }
       });
     },
-
-    
   },
 };
 </script>

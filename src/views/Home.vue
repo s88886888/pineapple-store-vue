@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-20 21:41:50
+ * @LastEditTime: 2022-11-24 23:46:06
  * @FilePath: \pineapplestoer_webui\src\views\Home.vue
  * @Description: 主页
  * 
@@ -24,9 +24,7 @@
  -->
 
 <template>
-  
   <div class="home" id="home" name="home">
-
     <div class="block" @mouseleave="clover">
       <!-- 左边导航栏 -->
       <div id="leftcategoryList">
@@ -51,8 +49,14 @@
           />
         </el-carousel-item>
       </el-carousel>
+      <!-- 轮播图END -->
+
       <!-- 右边菜单栏 -->
-      <div id="rightcategoryList" @mouseleave="clover" v-show="righcategoryListShow">
+      <div
+        id="rightcategoryList"
+        @mouseleave="clover"
+        v-show="righcategoryListShow"
+      >
         <div
           v-for="(item, index) in rightcategoryDataListShow"
           :key="item.productId"
@@ -74,7 +78,6 @@
       </div>
       <!-- 右边菜单栏END -->
     </div>
-    <!-- 轮播图END -->
 
     <div class="main-box">
       <div class="main">
@@ -86,7 +89,7 @@
           <div class="box-bd">
             <div class="promo-list">
               <router-link to>
-                <img src="../assets/image/login/background-image.jpg">
+                <img src="../assets/image/login/background-image.jpg" />
               </router-link>
             </div>
             <div class="list">
@@ -95,8 +98,6 @@
           </div>
         </div>
         <!-- 手机商品展示区域END -->
-
-
 
         <!-- 配件商品展示区域 -->
         <!-- <div class="accessory" id="promo-menu"> -->
@@ -207,7 +208,7 @@ export default {
       }
     },
   },
-  created() {
+  async created() {
     // 获取轮播图数据
     this.getCarousel();
 
@@ -253,19 +254,22 @@ export default {
       } else {
         this.leftcategoryDataList = res.data;
 
+
+              //获取轮播图右菜单栏数据
+      //////////////////////////////////////////////////////
+      // console.log(this.leftcategoryDataList, "111111111");
+
+      if (this.rightcategoryDataList == "") {
+        for (let i = 0; i < this.leftcategoryDataList.length; i++) {
+          this.rightcategoryDataList.push(
+            this.leftcategoryDataList[i].productList
+          );
+        }
+      }
+
         // console.log(this.leftcategoryDataList);
 
-        //获取轮播图右菜单栏数据
-        //////////////////////////////////////////////////////
-        if (this.leftcategoryDataList != null) {
-          for (let i = 0; i < this.leftcategoryDataList.length; i++) {
-            const { data: model } = await this.$axios.get(
-              "/api/product/selectAllByCategoryId/" +
-                this.leftcategoryDataList[i].categoryId
-            );
-            this.rightcategoryDataList.push(model);
-          }
-        }
+        // console.log(this.rightcategoryDataList);
 
         // this.leftcategoryDataList.forEach(async (element) => {
 
@@ -282,12 +286,16 @@ export default {
     clover() {
       this.righcategoryListShow = false;
     },
+
     //获取本地缓存轮播图右菜单栏数据
     getProductStar(id) {
-      // console.log("index=",id+""+"categoryId=",categoryId);
-      if (this.leftcategoryDataList != null) {
+
+
+      console.log(this.rightcategoryDataList, "222222222222");
+
+      if (this.rightcategoryDataList != null) {
         this.righcategoryListShow = true;
-        this.rightcategoryDataListShow = this.rightcategoryDataList[id].data;
+        this.rightcategoryDataListShow = this.rightcategoryDataList[id];
       }
     },
 
