@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-24 23:46:06
+ * @LastEditTime: 2022-11-30 20:33:55
  * @FilePath: \pineapplestoer_webui\src\views\Home.vue
  * @Description: 主页
  * 
@@ -28,12 +28,17 @@
     <div class="block" @mouseleave="clover">
       <!-- 左边导航栏 -->
       <div id="leftcategoryList">
+       
         <ul
+        
+             
           v-for="(item, index) in leftcategoryDataList"
           :key="item.categoryId"
         >
+      
           <li class="blocklist" @mouseenter="getProductStar(index)">
-            {{ item.categoryName }}
+            <!-- <img width="10px" src="../assets/image/mi-icon.png"/> -->
+              {{ item.categoryName }}
           </li>
         </ul>
       </div>

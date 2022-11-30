@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 03:56:36
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-22 11:59:07
+ * @LastEditTime: 2022-11-30 21:16:01
  * @FilePath: \pineapplestoer_webui\src\views\Login.vue
  * @Description: 登录注册
  * 
@@ -44,8 +44,9 @@
       <div id="main" class="userbox">
         <!-- tab卡片 -->
         <el-tabs v-model="activeName">
+
           <el-tab-pane
-            class="selected pointer"
+            class="loginselected"
             label="登录"
             name="first"
             :lazy="true"
@@ -120,7 +121,7 @@
               status-icon
               :rules="rerules"
               ref="resgitList"
-              class="demo-loginList"
+              class="loginselected"
             >
               <el-form-item label="" prop="phone">
                 <el-input
@@ -147,9 +148,9 @@
                 </el-input>
 
                 <div class="phonecode-button">
-                  <el-button v-if="checkTokenShow" @click="tokenshow"
-                    >验证码</el-button
-                  >
+                  <el-button @click="tokenshow" :disabled="isSend">{{
+                    sendmsg
+                  }}</el-button>
                   <!-- <el-button v-if="phoneCodeShow" @click="getPhoneCode"
                     >发送</el-button
                   > -->
@@ -236,8 +237,8 @@ export default {
           { required: true, message: "请输入账号", trigger: "blur" },
           {
             min: 2,
-            max: 10,
-            message: "长度在 5 到 8 个字符",
+            max: 11,
+            message: "长度在 2 到 11 个字符",
             trigger: "blur",
           },
         ],
@@ -297,7 +298,9 @@ export default {
       checkPhoneShow: false, //检查手机号码是否重复
       checkNameShow: false, //检查用户名是否重复
       // phoneCodeShow: false, //验证码发送事件
-      checkTokenShow: true, //人机校验事件
+      isSend: false, //验证码发送事件
+
+      sendmsg: "验证码",
 
       //登录
       loginList: {
@@ -316,9 +319,6 @@ export default {
       },
     };
   },
-
-  created() {},
-
   mounted() {
     //登录
     //页面进入时就挂载验证码
@@ -353,8 +353,7 @@ export default {
         return this.$message.error("手机号码格式错误！");
       }
 
-      if(this.checkNameShow)
-      {
+      if (this.checkNameShow) {
         return this.$message.error("手机已经被注册！");
       }
 
@@ -366,9 +365,12 @@ export default {
         success: (resgitToken) => {
           this.resgitToken = resgitToken;
           this.getPhoneCode();
+          showtime.hide()
         },
       });
+
       showtime.show();
+
     },
 
     // 登录校验提交
@@ -404,6 +406,14 @@ export default {
     },
     //登录事件
     async login() {
+      let phoneChenck =
+        /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+      if (phoneChenck.test(this.loginList.userName)) {
+        this.loginList.loginType=0;
+      } else {
+        this.loginList.loginType=1;
+      }
+
       const { data: res } = await this.$axios
         .post("/api/users/login", qs.stringify(this.loginList))
         .catch((err) => {
@@ -481,10 +491,21 @@ export default {
         this.resgitToken = "";
         return this.$message.error(res.msg);
       } else {
-        this.$message({
-          message: res.msg + "",
-          type: "success",
-        });
+        this.$message.success(res.msg);
+
+        this.isSend = true;
+
+        let timer = 60;
+        this.sendmsg = timer + "s";
+        this.timeFun = setInterval(() => {
+          --timer;
+          this.sendmsg = timer + "s";
+          if (timer == 0) {
+            this.isSend = false;
+            this.sendmsg = "重新发送";
+            clearInterval(this.timeFun);
+          }
+        }, 1000);
       }
     },
 
