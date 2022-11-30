@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 03:56:36
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-30 21:16:01
+ * @LastEditTime: 2022-12-01 02:48:50
  * @FilePath: \pineapplestoer_webui\src\views\Login.vue
  * @Description: 登录注册
  * 
@@ -447,6 +447,19 @@ export default {
     },
     //注册事件
     async resgit() {
+
+      if(this.checkPhoneShow)
+      {
+        return this.$message.error("手机已被注册")
+      }
+      if(this.checkNameShow)
+      {
+        return this.$message.error("用户名已被注册")
+      }
+      if(this.resgitToken=="")
+      {
+        return this.$message.error("请先请求手机验证码")
+      }
       const { data: res } = await this.$axios.post(
         "/api/users/resgit",
         qs.stringify(this.resgitList)
