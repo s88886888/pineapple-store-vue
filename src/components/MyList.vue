@@ -1,7 +1,7 @@
 <template>
   <div id="myList" class="myList">
     <ul>
-      <li v-for="(item,index) in list" :key="index">
+      <li v-for="(item, index) in list" :key="index">
         <el-popover placement="top">
           <p>确定删除吗？</p>
           <div style="text-align: right; margin: 10px 0 0">
@@ -22,20 +22,24 @@
           :to="{ path: '/goods/details', query: { productID: item.productId } }"
         >
           <img :src="item.url" alt />
+          <!-- <img :src="item.url == null ? item.imgList[0].url : item.url" alt /> -->
           <h2>{{ item.productName }}</h2>
           <h3>{{ item.content }}</h3>
+
           <p>
-            <span
-              >{{ (item.originalPrice * item.discounts).toFixed(2) }}元</span
-            >
-            <span
-              v-show="item.originalPrice != item.originalPrice * item.discounts"
-              class="del"
-              >{{ item.originalPrice }}元</span
-            >
+
+            <span >{{ isNaN(item.originalPrice*item.discounts) ? (item.skuList[0].originalPrice * item.skuList[0].discounts).toFixed(2):(item.originalPrice*item.discounts).toFixed(2) }}元</span>
+
+            <!-- <span >{{ (sku.originalPrice * sku.discounts).toFixed(2) }}元</span> -->
+
+            <span v-show=" item.originalPrice != item.originalPrice * item.discounts " class="del">
+              {{isNaN(item.originalPrice*item.discounts) ? (item.skuList[0].originalPrice * 1).toFixed(2):(item.originalPrice * 1).toFixed(2)}}元</span>      
+              
           </p>
+          
         </router-link>
       </li>
+
       <li v-show="isMore && list.length >= 1" id="more">
         <router-link
           :to="{ path: '/goods', query: { categoryID: categoryID } }"

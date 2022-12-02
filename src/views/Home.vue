@@ -14,31 +14,26 @@
  *  └─────────────────────────────────────────────────────────────┘
  * 
  * @Author: Linson 854700937@qq.com
- * @Date: 2022-10-20 01:47:02
+ * @Date: 2022-11-06 20:29:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-30 20:33:55
+ * @LastEditTime: 2022-12-03 02:15:57
  * @FilePath: \pineapplestoer_webui\src\views\Home.vue
- * @Description: 主页
+ * @Description: 
  * 
  * Copyright (c) 2022 by Linson 854700937@qq.com, All Rights Reserved. 
  -->
-
 <template>
   <div class="home" id="home" name="home">
     <div class="block" @mouseleave="clover">
       <!-- 左边导航栏 -->
       <div id="leftcategoryList">
-       
         <ul
-        
-             
           v-for="(item, index) in leftcategoryDataList"
           :key="item.categoryId"
         >
-      
           <li class="blocklist" @mouseenter="getProductStar(index)">
             <!-- <img width="10px" src="../assets/image/mi-icon.png"/> -->
-              {{ item.categoryName }}
+            {{ item.categoryName }}
           </li>
         </ul>
       </div>
@@ -77,24 +72,25 @@
             </p>
           </router-link>
 
+          <img :src="item.imgList[0].url" />
           <!-- <img :src="item.url" /> -->
-          <img src="../assets/image/index/shouji/0.jpg" />
         </div>
       </div>
       <!-- 右边菜单栏END -->
     </div>
 
     <div class="main-box">
+
       <div class="main">
-        <!-- 手机商品展示区域 -->
-        <div class="phone">
+        <!-- 商品展示区域 -->
+        <div>
           <div class="box-hd">
-            <div class="title">特价推荐</div>
+            <div class="title">好物推荐</div>
           </div>
           <div class="box-bd">
             <div class="promo-list">
               <router-link to>
-                <img src="../assets/image/login/background-image.jpg" />
+                <img src="https://img1.imgtp.com/2022/12/03/3IRRU9zi.jpg" />
               </router-link>
             </div>
             <div class="list">
@@ -102,17 +98,17 @@
             </div>
           </div>
         </div>
-        <!-- 手机商品展示区域END -->
+        <!-- 商品展示区域END -->
 
         <!-- 配件商品展示区域 -->
-        <!-- <div class="accessory" id="promo-menu"> -->
-        <!-- <div class="box-hd">
+        <div class="accessory" id="promo-menu">
+          <div class="box-hd">
             <div class="title">配件</div>
-            <div class="more" id="more">
-              <MyMenu :val="3" @fromChild="getChildMsg2">
-                <span slot="1">热门</span>
-                <span slot="2">保护套</span>
-                <span slot="3">充电器</span>
+            <div  class="more" id="more">
+              <MyMenu :val="3" @fromChild="getChildMsg">
+                <span slot="1">{{categoryName[0]}}</span>
+                <span slot="2">{{categoryName[1]}}</span>
+                <span slot="3">{{categoryName[2]}}</span>
               </MyMenu>
             </div>
           </div>
@@ -120,28 +116,60 @@
             <div class="promo-list">
               <ul>
                 <li>
-                  <img
-                    :src="
-                      $target + 'public/imgs/accessory/accessory-promo1.png'
-                    "
-                    alt
-                  />
+                  <img src="../assets/image/index/6.jpg" alt />
                 </li>
                 <li>
-                  <img
-                    :src="
-                      $target + 'public/imgs/accessory/accessory-promo2.png'
-                    "
-                    alt
-                  />
+                  <img src="../assets/image/index/6.jpg" alt />
                 </li>
               </ul>
             </div>
+
             <div class="list">
-              <MyList :list="accessoryList" :isMore="true"></MyList>
+              <div id="myList" class="myList">
+                <ul>
+                  <li v-for="(item, index) in accessoryList" :key="index">
+                    <router-link
+                      :to="{
+                        path: '/goods/details',
+                        query: { productID: item.productId },
+                      }"
+                    >
+                      <img
+                        :src="item.imgList[0].url"
+                        alt
+                      />
+                      <h2>{{ item.productName }}</h2>
+                      <h3>{{ item.content }}</h3>
+
+                      <!-- <div v-show="(item.skuList==null)"> -->
+                      <p>
+                        <!-- <span>{{ (item.skuList[0].originalPrice *item.skuList[0].discounts).toFixed(2) ==undefined?0:(item.skuList[0].originalPrice *item.skuList[0].discounts).toFixed(2)}}元</span
+                        >
+                        <span v-show="item.skuList[0].originalPrice !=item.skuList[0].originalPrice *item.skuList[0].discounts" class="del">
+                          {{ item.skuList.length<=0? 0: item.skuList[0].originalPrice.toFixed(2) }}元</span> -->
+                      </p>
+                
+                       <!-- </div> -->
+                    </router-link>
+                  </li>
+
+                  <li v-show="true" id="more">
+                    <router-link
+                      :to="{
+                        path: '/goods',
+                        query: { categoryID: categoryId },
+                      }"
+                    >
+                      浏览更多
+                      <i class="el-icon-d-arrow-right"></i>
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div> -->
-        <!-- </div> -->
+
+          </div>
+        </div>
 
         <!-- 配件商品展示区域END -->
       </div>
@@ -157,58 +185,35 @@ export default {
       leftcategoryDataList: "", //轮播左菜单列表，
       rightcategoryDataList: [], //轮播右菜单全部列表
       rightcategoryDataListShow: "", //轮播右菜单个列表
-
       productDisplayList: "", // 特价展示列表
 
-      miTvList: "", // 小米电视商品列表
-      hotProductDisplayList: "", // 家电商品列表
-      applianceHotList: "", //热门家电商品列表
-      accessoryList: "", //配件商品列表
-      accessoryHotList: "", //热门配件商品列表
-      protectingShellList: "", // 保护套商品列表
-      chargerList: "", //充电器商品列表
-      applianceActive: 1, // 家电当前选中的商品分类
-      accessoryActive: 1, // 配件当前选中的商品分类
+      accessoryList: [], //配件商品列表
+      
+      accessoryHotList: [], //热门配件商品列表
+      protectingShellList: [], // 保护套商品列表
+      chargerList: [], //充电器商品列表
+      categoryName:[],
+
+
+      accessoryActive: 1, // 当前选中的商品分类
+      categoryId:""
     };
   },
   watch: {
-    // 家电当前选中的商品分类，响应不同的商品数据
-    applianceActive: function (val) {
-      // 页面初始化的时候把applianceHotList(热门家电商品列表)直接赋值给applianceList(家电商品列表)
-      // 所以在切换商品列表时判断applianceHotList是否为空,为空则是第一次切换,把applianceList赋值给applianceHotList
-      if (this.applianceHotList == "") {
-        this.applianceHotList = this.hotProductDisplayList;
-      }
+    accessoryActive(val) {
       if (val == 1) {
-        // 1为热门商品
-        this.hotProductDisplayList = this.applianceHotList;
-        return;
-      }
-      if (val == 2) {
-        // 2为电视商品
-        this.hotProductDisplayList = this.miTvList;
-        return;
-      }
-    },
-    accessoryActive: function (val) {
-      // 页面初始化的时候把accessoryHotList(热门配件商品列表)直接赋值给accessoryList(配件商品列表)
-      // 所以在切换商品列表时判断accessoryHotList是否为空,为空则是第一次切换,把accessoryList赋值给accessoryHotList
-      if (this.accessoryHotList == "") {
-        this.accessoryHotList = this.accessoryList;
-      }
-      if (val == 1) {
-        // 1为热门商品
         this.accessoryList = this.accessoryHotList;
+        this.categoryId=this.accessoryList[0].categoryId;
         return;
       }
       if (val == 2) {
-        // 2为保护套商品
         this.accessoryList = this.protectingShellList;
+        this.categoryId=this.accessoryList[0].categoryId;
         return;
       }
       if (val == 3) {
-        //3 为充电器商品
         this.accessoryList = this.chargerList;
+        this.categoryId=this.accessoryList[0].categoryId;
         return;
       }
     },
@@ -223,22 +228,10 @@ export default {
     //获取商品展示区的数据
     this.getProductDisplay();
 
-    // 获取各类商品数据
-    // this.getPromo("手机", "productDisplayList");
-    // this.getPromo("电视机", "miTvList");
-    // this.getPromo("保护套", "protectingShellList");
-    // this.getPromo("充电器", "chargerList");
-    // this.getPromo(
-    //   ["电视机", "空调", "洗衣机"],
-    //   "applianceList",
-    //   "/api/product/getHotProduct"
-    // );
-    // this.getPromo(
-    //   ["保护套", "保护膜", "充电器", "充电宝"],
-    //   "accessoryList",
-    //   "/api/product/getHotProduct"
-    // );
+    //获取分类推荐
+    await this.getCategoryParent();
   },
+
   methods: {
     //获取轮播图数据
     async getCarousel() {
@@ -259,51 +252,30 @@ export default {
       } else {
         this.leftcategoryDataList = res.data;
 
+        //获取轮播图右菜单栏数据
+        //////////////////////////////////////////////////////
+        // console.log(this.leftcategoryDataList, "111111111");
 
-              //获取轮播图右菜单栏数据
-      //////////////////////////////////////////////////////
-      // console.log(this.leftcategoryDataList, "111111111");
-
-      if (this.rightcategoryDataList == "") {
-        for (let i = 0; i < this.leftcategoryDataList.length; i++) {
-          this.rightcategoryDataList.push(
-            this.leftcategoryDataList[i].productList
-          );
+        if (this.rightcategoryDataList == "") {
+          for (let i = 0; i < this.leftcategoryDataList.length; i++) {
+            this.rightcategoryDataList.push(
+              this.leftcategoryDataList[i].productList
+            );
+          }
         }
-      }
-
-        // console.log(this.leftcategoryDataList);
-
-        // console.log(this.rightcategoryDataList);
-
-        // this.leftcategoryDataList.forEach(async (element) => {
-
-        //   const { data: model } =await this.$axios.get(
-        //     "/api/product/selectAllByCategoryId/" + element.categoryId
-        //   );
-        //  this.rightcategoryDataList.push(model);
-        // }
-        // );
-        // console.log(111111,this.rightcategoryDataList);
       }
     },
     //鼠标离开轮播右则隐藏
     clover() {
       this.righcategoryListShow = false;
     },
-
     //获取本地缓存轮播图右菜单栏数据
     getProductStar(id) {
-
-
-      console.log(this.rightcategoryDataList, "222222222222");
-
       if (this.rightcategoryDataList != null) {
         this.righcategoryListShow = true;
         this.rightcategoryDataListShow = this.rightcategoryDataList[id];
       }
     },
-
     //获取商品展示区的数据
     async getProductDisplay() {
       const { data: res } = await this.$axios.get(
@@ -315,34 +287,118 @@ export default {
         this.productDisplayList = res.data;
       }
     },
+    //获取分类推荐
+    async getCategoryParent() {
+      const { data: res } = await this.$axios.get(
+        "/api/category/SelectByParent"
+      );
+      if (res.code == 200) {
+        this.accessoryList = res.data;
+        for(let i =0; i<this.accessoryList.length;i++)
+        {
+          this.categoryName.push(this.accessoryList[i].categoryName);
+        }
+        this.accessoryHotList = this.accessoryList[0].productList;
+        this.protectingShellList = this.accessoryList[1].productList;
+        this.chargerList = this.accessoryList[2].productList;
+        this.accessoryList = this.accessoryList[0].productList;
+        this.categoryId=this.accessoryList[0].categoryId;
 
-    // // 获取家电模块子组件传过来的数据
-    // getChildMsg(val) {
-    //   this.applianceActive = val;
-    // },
+      } else {
+        return this.$message.error(res.msg);
+      }
+    },
 
-    // // 获取配件模块子组件传过来的数据
-    // getChildMsg2(val) {
-    //   this.accessoryActive = val;
-    // },
-
-    // // 获取各类商品数据方法封装
-    // getPromo(categoryName, val, api) {
-    //   api = api != undefined ? api : "/api/product/getPromoProduct";
-    //   this.$axios
-    //     .post(api, {
-    //       categoryName,
-    //     })
-    //     .then((res) => {
-    //       this[val] = res.data.Product;
-    //     })
-    //     .catch((err) => {
-    //       // return Promise.reject(err);
-    //     });
-    // },
+    // 获取配件模块子组件传过来的数据
+    getChildMsg(val) {
+      this.accessoryActive = val;
+    },
   },
 };
 </script>
 <style scoped>
 @import "../assets/css/index.css";
+</style>
+
+<style scoped>
+.myList ul li {
+  z-index: 1;
+  float: left;
+  width: 234px;
+  height: 280px;
+  padding: 10px 0;
+  margin: 0 0 14.5px 13.7px;
+  background-color: white;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+  position: relative;
+}
+.myList ul li:hover {
+  z-index: 2;
+  -webkit-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  -webkit-transform: translate3d(0, -2px, 0);
+  transform: translate3d(0, -2px, 0);
+}
+.myList ul li img {
+  display: block;
+  width: 160px;
+  height: 160px;
+  background: url(../assets/imgs/placeholder.png) no-repeat 50%;
+  margin: 0 auto;
+}
+.myList ul li h2 {
+  margin: 25px 10px 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.myList ul li h3 {
+  margin: 5px 10px;
+  height: 18px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #b0b0b0;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.myList ul li p {
+  margin: 10px 10px 10px;
+  text-align: center;
+  color: #ff6700;
+}
+.myList ul li p .del {
+  margin-left: 0.5em;
+  color: #b0b0b0;
+  text-decoration: line-through;
+}
+.myList #more {
+  text-align: center;
+  line-height: 280px;
+}
+.myList #more a {
+  font-size: 18px;
+  color: #333;
+}
+.myList #more a:hover {
+  color: #ff6700;
+}
+.myList ul li .delete {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: none;
+}
+.myList ul li:hover .delete {
+  display: block;
+}
+.myList ul li .delete:hover {
+  color: #ff6700;
+}
 </style>

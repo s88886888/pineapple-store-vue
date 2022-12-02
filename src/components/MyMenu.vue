@@ -1,5 +1,6 @@
 <template>
   <div class="myMenu" id="myMenu">
+
     <ul>
       <li
         v-for="item in val"
@@ -13,6 +14,7 @@
       </li>
     </ul>
   </div>
+  
 </template>
 <script>
 export default {
