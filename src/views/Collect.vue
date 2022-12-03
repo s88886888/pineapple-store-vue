@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:29:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-09 17:13:21
+ * @LastEditTime: 2022-12-03 20:39:26
  * @FilePath: \pineapplestoer_webui\src\views\Collect.vue
  * @Description: 
  * 
@@ -33,7 +33,7 @@
         我的收藏
       </div>
     </div>
-    <div class="content">
+    <div class="content animate__animated animate__zoomIn">
       <div class="goods-list" v-if="collectList.length>0">
         <MyList :list="collectList" :isDelete="true"></MyList>
       </div>
