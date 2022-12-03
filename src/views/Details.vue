@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-20 18:35:13
+ * @LastEditTime: 2022-12-03 15:52:06
  * @FilePath: \pineapplestoer_webui\src\views\Details.vue
  * @Description: 
  * 
@@ -75,24 +75,24 @@
       <div class="content">
         <h1 class="name">{{productDetails.productName}}</h1>
         <p class="intro">{{productDetails.content}}</p>
-        <p class="store">小米自营</p>
+        <p class="store">菠萝自营</p>
         <div class="price">
-          <span>{{productDetails.originalPrice * productDetails.discounts}}元</span>
+          <span>{{(productDetails.originalPrice * productDetails.discounts).toFixed(2)}}元</span>
           <span
             v-show="productDetails.originalPrice != productDetails.originalPrice * productDetails.discounts "
             class="del"
-          >{{productDetails.originalPrice }}元</span>
+          >{{(productDetails.originalPrice*1).toFixed(2) }}元</span>
         </div>
         <div class="pro-list">
           <span class="pro-name">{{productDetails.productName}}</span>
           <span class="pro-price">
-            <span>{{productDetails.originalPrice *productDetails.discounts}}元</span>
+            <span>{{(productDetails.originalPrice *productDetails.discounts).toFixed(2)}}元</span>
             <span
               v-show="productDetails.originalPrice != productDetails.originalPrice*productDetails.discounts"
               class="pro-del"
-            >{{productDetails.originalPrice}}元</span>
+            >{{(productDetails.originalPrice*1).toFixed(2)}}元</span>
           </span>
-          <p class="price-sum">总计 : {{productDetails.originalPrice *productDetails.discounts}}元</p>
+          <p class="price-sum">总计 : {{(productDetails.originalPrice *productDetails.discounts).toFixed(2)}}元</p>
         </div>
         <!-- 内容区底部按钮 -->
         <div class="button">
@@ -103,10 +103,10 @@
         <div class="pro-policy">
           <ul>
             <li>
-              <i class="el-icon-circle-check"></i> 小米自营
+              <i class="el-icon-circle-check"></i> 菠萝自营
             </li>
             <li>
-              <i class="el-icon-circle-check"></i> 小米发货
+              <i class="el-icon-circle-check"></i> 菠萝发货
             </li>
             <li>
               <i class="el-icon-circle-check"></i> 7天无理由退货

@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-24 17:52:45
+ * @LastEditTime: 2022-12-03 15:56:23
  * @FilePath: \pineapplestoer_webui\src\views\ConfirmOrder.vue
  * @Description: 
  * 
@@ -129,7 +129,7 @@
               >
               <span class="pro-status"></span>
               <span class="pro-total"
-                >{{ item.productPrice * item.cartNum }}元</span
+                >{{ (item.productPrice * item.cartNum).toFixed(2) }}元</span
               >
             </li>
           </ul>
@@ -163,7 +163,7 @@
             </li>
             <li>
               <span class="title">商品总价：</span>
-              <span class="value">{{ getTotalPrice }}元</span>
+              <span class="value">{{ (getTotalPrice).toFixed(2) }}元</span>
             </li>
             <li>
               <span class="title">活动优惠：</span>
@@ -180,7 +180,7 @@
             <li class="total">
               <span class="title">应付总额：</span>
               <span class="value">
-                <span class="total-price">{{ getTotalPrice }}</span
+                <span class="total-price">{{ (getTotalPrice).toFixed(2) }}</span
                 >元
               </span>
             </li>

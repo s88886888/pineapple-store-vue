@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-22 11:28:10
+ * @LastEditTime: 2022-12-03 15:53:41
  * @FilePath: \pineapplestoer_webui\src\views\ShoppingCart.vue
  * @Description: 我的购物车页面组件
  * 
@@ -106,7 +106,7 @@
           </div>
 
           <div class="pro-total pro-total-in">
-            {{ item.productPrice*item.cartNum}}元
+            {{ (item.productPrice*item.cartNum).toFixed(2)}}元
           </div>
           <div class="pro-action">
             <el-popover placement="right">
@@ -146,7 +146,7 @@
         <div class="cart-bar-right">
           <span>
             <span class="total-price-title">合计：</span>
-            <span class="total-price">{{ getTotalPrice }}元</span>
+            <span class="total-price">{{ (getTotalPrice).toFixed(2) }}元</span>
           </span>
           <router-link :to="getCheckNum > 0 ? '/confirmOrder' : ''">
             <div

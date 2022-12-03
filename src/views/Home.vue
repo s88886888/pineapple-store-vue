@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:29:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-03 02:15:57
+ * @LastEditTime: 2022-12-03 17:46:26
  * @FilePath: \pineapplestoer_webui\src\views\Home.vue
  * @Description: 
  * 
@@ -40,7 +40,7 @@
       <!-- 左边导航栏end -->
 
       <!-- 轮播图 -->
-      <el-carousel height="460px">
+      <el-carousel height="460px" class="imgbox">
         <el-carousel-item v-for="item in carousel" :key="item.imgId">
           <img
             style="height: 460px; width: 1220px"
@@ -85,7 +85,7 @@
         <!-- 商品展示区域 -->
         <div>
           <div class="box-hd">
-            <div class="title">好物推荐</div>
+            <div class="title">菠萝推荐</div>
           </div>
           <div class="box-bd">
             <div class="promo-list">
@@ -103,7 +103,7 @@
         <!-- 配件商品展示区域 -->
         <div class="accessory" id="promo-menu">
           <div class="box-hd">
-            <div class="title">配件</div>
+            <div class="title">菠萝优选</div>
             <div  class="more" id="more">
               <MyMenu :val="3" @fromChild="getChildMsg">
                 <span slot="1">{{categoryName[0]}}</span>
@@ -116,10 +116,10 @@
             <div class="promo-list">
               <ul>
                 <li>
-                  <img src="../assets/image/index/6.jpg" alt />
+                  <img src="https://img1.imgtp.com/2022/12/03/204XQpy5.jpg" alt />
                 </li>
                 <li>
-                  <img src="../assets/image/index/6.jpg" alt />
+                  <img src="https://img1.imgtp.com/2022/12/03/urGCvWJn.jpg" alt />
                 </li>
               </ul>
             </div>
@@ -141,15 +141,15 @@
                       <h2>{{ item.productName }}</h2>
                       <h3>{{ item.content }}</h3>
 
-                      <!-- <div v-show="(item.skuList==null)"> -->
+                      <div>
                       <p>
-                        <!-- <span>{{ (item.skuList[0].originalPrice *item.skuList[0].discounts).toFixed(2) ==undefined?0:(item.skuList[0].originalPrice *item.skuList[0].discounts).toFixed(2)}}元</span
+                        <span>{{ (item.skuList[0].originalPrice *item.skuList[0].discounts).toFixed(2) ==undefined?0:(item.skuList[0].originalPrice *item.skuList[0].discounts).toFixed(2)}}元</span
                         >
                         <span v-show="item.skuList[0].originalPrice !=item.skuList[0].originalPrice *item.skuList[0].discounts" class="del">
-                          {{ item.skuList.length<=0? 0: item.skuList[0].originalPrice.toFixed(2) }}元</span> -->
+                          {{ item.skuList.length<=0? 0: item.skuList[0].originalPrice.toFixed(2) }}元</span>
                       </p>
                 
-                       <!-- </div> -->
+                       </div>
                     </router-link>
                   </li>
 
