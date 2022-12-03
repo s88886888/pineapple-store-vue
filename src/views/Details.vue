@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-03 15:52:06
+ * @LastEditTime: 2022-12-03 20:48:20
  * @FilePath: \pineapplestoer_webui\src\views\Details.vue
  * @Description: 
  * 
@@ -55,7 +55,7 @@
     <div class="main">
       <!-- 左侧商品轮播图 -->
 
-      <div class="blockdetalis">
+      <div class="blockdetalis animate__animated animate__zoomIn">
         <el-carousel  height="560px" v-if="productPicture.length>1">
           <el-carousel-item v-for="item in productPicture" :key="item.id">
             <img style="height:560px;" :src="item.url" />

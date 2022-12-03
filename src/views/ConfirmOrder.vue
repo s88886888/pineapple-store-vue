@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-03 15:56:23
+ * @LastEditTime: 2022-12-03 20:55:20
  * @FilePath: \pineapplestoer_webui\src\views\ConfirmOrder.vue
  * @Description: 
  * 
@@ -82,7 +82,7 @@
         title="添加地址"
         :visible.sync="dialogVisible"
         width="50%"
-        :before-close="handleClose"
+        :before-close="handleCloses"
       >
         <el-form ref="newaddress" :model="newaddress" label-width="90px">
           <el-form-item label="收货人名字" style="width: 300px">
@@ -307,6 +307,7 @@ export default {
     confirmAddressCss(val) {
       this.confirmAddress = val;
     },
+
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then((_) => {
@@ -337,6 +338,14 @@ export default {
                 }
               }
             });
+          done();
+        })
+        .catch((_) => {});
+    },
+
+    handleCloses(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
           done();
         })
         .catch((_) => {});
