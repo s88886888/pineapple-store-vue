@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 03:56:36
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-01 02:48:50
+ * @LastEditTime: 2022-12-03 20:04:44
  * @FilePath: \pineapplestoer_webui\src\views\Login.vue
  * @Description: 登录注册
  * 
@@ -42,181 +42,190 @@
       </div>
 
       <div id="main" class="userbox">
-        <!-- tab卡片 -->
-        <el-tabs v-model="activeName">
-
-          <el-tab-pane
-            class="loginselected"
-            label="登录"
-            name="first"
-            :lazy="true"
-          >
-            <el-form
-              :model="loginList"
-              status-icon
-              :rules="rules"
-              ref="loginList"
-              class="demo-loginList"
+          <!-- tab卡片 -->
+          <el-tabs v-model="activeName">
+            <el-tab-pane
+              label="登录"
+              class="loginselected"
+              name="first"
+              :lazy="true"
             >
-              <el-form-item label="" prop="userName">
-                <el-input
-                  class="dialog-input-text"
-                  type="text"
-                  v-model="loginList.userName"
-                  autocomplete="off"
-                  placeholder="手机号码/账号ID"
-                ></el-input>
-              </el-form-item>
+              <el-form
+                :model="loginList"
+                status-icon
+                :rules="rules"
+                ref="loginList"
+                class="demo-loginList"
+              >
+                <el-form-item label="" prop="userName">
+                  <el-input
+                    class="dialog-input-text"
+                    type="text"
+                    v-model="loginList.userName"
+                    autocomplete="off"
+                    placeholder="手机号码/账号ID"
+                  ></el-input>
+                </el-form-item>
 
-              <el-form-item label="" prop="passWord">
-                <el-input
-                  class="dialog-input-text"
-                  type="password"
-                  v-model="loginList.passWord"
-                  autocomplete="off"
-                  placeholder="密码"
-                ></el-input>
-              </el-form-item>
+                <el-form-item label="" prop="passWord">
+                  <el-input
+                    class="dialog-input-text"
+                    type="password"
+                    v-model="loginList.passWord"
+                    autocomplete="off"
+                    placeholder="密码"
+                  ></el-input>
+                </el-form-item>
 
-              <el-form-item prop="type">
-                <el-checkbox-group v-model="loginList.type">
-                  <el-checkbox id="ch-box" class="ch-box" label="" name="type">
-                    <div id="text">
-                      已阅读并同意<a class="pointer">用户协议</a> 和<a
-                        class="pointer"
-                        >隐私政策</a
-                      >
-                    </div>
-                  </el-checkbox>
-                </el-checkbox-group>
-              </el-form-item>
-            </el-form>
+                <el-form-item prop="type">
+                  <el-checkbox-group v-model="loginList.type">
+                    <el-checkbox
+                      id="ch-box"
+                      class="ch-box"
+                      label=""
+                      name="type"
+                    >
+                      <div id="text">
+                        已阅读并同意<a class="pointer">用户协议</a> 和<a
+                          class="pointer"
+                          >隐私政策</a
+                        >
+                      </div>
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
+              </el-form>
 
-            <div class="dingxiangui" ref="login"></div>
+              <div class="dingxiangui" ref="login"></div>
 
-            <el-button
-              id="log-in"
-              class="pointer"
-              @click="loginsubmitForm('loginList')"
-              >登录</el-button
-            >
-            <div class="action">
-              <a id="a1" class="pointer">忘记密码？</a>
-              <a id="a2" class="pointer">手机号登录</a>
-            </div>
-            <div id="other">
-              <!-- <p>请先验证</p> -->
-              <!-- <div>
+              <el-button
+                id="log-in"
+                class="pointer"
+                @click="loginsubmitForm('loginList')"
+                >登录</el-button
+              >
+              <div class="action">
+                <a id="a1" class="pointer">忘记密码？</a>
+                <a id="a2" class="pointer">手机号登录</a>
+              </div>
+              <div id="other">
+                <!-- <p>请先验证</p> -->
+                <!-- <div>
                 <img src="../assets/image/login/支付宝.png" />
                 <img src="../assets/image/login/微信.png" />
                 <img src="../assets/image/login/QQ.png" />
                 <img src="../assets/image/login/微博.png" />
               </div> -->
-            </div>
-          </el-tab-pane>
+              </div>
+            </el-tab-pane>
 
-          <el-tab-pane label="注册" name="second" :lazy="true">
-            <el-form
-              :model="resgitList"
-              status-icon
-              :rules="rerules"
-              ref="resgitList"
-              class="loginselected"
-            >
-              <el-form-item label="" prop="phone">
-                <el-input
-                  class="dialog-input-text"
-                  type="text"
-                  v-model="resgitList.phone"
-                  autocomplete="off"
-                  placeholder="手机号码"
-                  @change="checkPhone"
-                ></el-input>
-                <p v-show="checkPhoneShow" class="dialog-input-text-phone">
-                  *该手机已经被注册
-                </p>
-              </el-form-item>
+            <el-tab-pane label="注册" name="second" :lazy="true">
+              <el-form
+                :model="resgitList"
+                status-icon
+                :rules="rerules"
+                ref="resgitList"
+                class="loginselected"
+              >
+                <el-form-item label="" prop="phone">
+                  <el-input
+                    class="dialog-input-text"
+                    type="text"
+                    v-model="resgitList.phone"
+                    autocomplete="off"
+                    placeholder="手机号码"
+                    @change="checkPhone"
+                  ></el-input>
+                  <p v-show="checkPhoneShow" class="dialog-input-text-phone">
+                    *该手机已经被注册
+                  </p>
+                </el-form-item>
 
-              <el-form-item label="" prop="phonecode">
-                <el-input
-                  class="dialog-input-text-phonecode"
-                  type="text"
-                  v-model="resgitList.phonecode"
-                  autocomplete="off"
-                  placeholder="验证码"
-                >
-                </el-input>
+                <el-form-item label="" prop="phonecode">
+                  <el-input
+                    class="dialog-input-text-phonecode"
+                    type="text"
+                    v-model="resgitList.phonecode"
+                    autocomplete="off"
+                    placeholder="验证码"
+                  >
+                  </el-input>
 
-                <div class="phonecode-button">
-                  <el-button @click="tokenshow" :disabled="isSend">{{
-                    sendmsg
-                  }}</el-button>
-                  <!-- <el-button v-if="phoneCodeShow" @click="getPhoneCode"
+                  <div class="phonecode-button">
+                    <el-button @click="tokenshow" :disabled="isSend">{{
+                      sendmsg
+                    }}</el-button>
+                    <!-- <el-button v-if="phoneCodeShow" @click="getPhoneCode"
                     >发送</el-button
                   > -->
-                  <div ref="resgit"></div>
-                </div>
-              </el-form-item>
+                    <div ref="resgit"></div>
+                  </div>
+                </el-form-item>
 
-              <el-form-item label="" prop="userName">
-                <el-input
-                  class="dialog-input-text"
-                  type="text"
-                  v-model="resgitList.userName"
-                  autocomplete="off"
-                  placeholder="用户名"
-                  @change="checkName"
-                ></el-input>
-                <p v-show="checkNameShow" class="dialog-input-text-phone">
-                  *该用户名已经被注册
-                </p>
-              </el-form-item>
+                <el-form-item label="" prop="userName">
+                  <el-input
+                    class="dialog-input-text"
+                    type="text"
+                    v-model="resgitList.userName"
+                    autocomplete="off"
+                    placeholder="用户名"
+                    @change="checkName"
+                  ></el-input>
+                  <p v-show="checkNameShow" class="dialog-input-text-phone">
+                    *该用户名已经被注册
+                  </p>
+                </el-form-item>
 
-              <el-form-item label="" prop="passWord">
-                <el-input
-                  class="dialog-input-text"
-                  type="password"
-                  v-model="resgitList.passWord"
-                  autocomplete="off"
-                  placeholder="设置密码"
-                ></el-input>
-              </el-form-item>
+                <el-form-item label="" prop="passWord">
+                  <el-input
+                    class="dialog-input-text"
+                    type="password"
+                    v-model="resgitList.passWord"
+                    autocomplete="off"
+                    placeholder="设置密码"
+                  ></el-input>
+                </el-form-item>
 
-              <el-form-item prop="type">
-                <el-checkbox-group v-model="resgitList.type">
-                  <el-checkbox id="ch-box" class="ch-box" label="" name="type">
-                    <div id="text">
-                      已阅读并同意菠萝帐号<a class="pointer">用户协议</a> 和<a
-                        class="pointer"
-                        >隐私政策</a
-                      >
-                    </div>
-                  </el-checkbox>
-                </el-checkbox-group>
-              </el-form-item>
-            </el-form>
+                <el-form-item prop="type">
+                  <el-checkbox-group v-model="resgitList.type">
+                    <el-checkbox
+                      id="ch-box"
+                      class="ch-box"
+                      label=""
+                      name="type"
+                    >
+                      <div id="text">
+                        已阅读并同意菠萝帐号<a class="pointer">用户协议</a> 和<a
+                          class="pointer"
+                          >隐私政策</a
+                        >
+                      </div>
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
+              </el-form>
 
-            <div class="action">
-              <el-button
-                id="log-in"
-                class="pointer"
-                @click="resgitsubmitForm('resgitList')"
-                >注册</el-button
-              >
-              <a id="a1" class="pointer">收不到验证码？</a>
-            </div>
+              <div class="action">
+                <el-button
+                  id="log-in"
+                  class="pointer"
+                  @click="resgitsubmitForm('resgitList')"
+                  >注册</el-button
+                >
+                <a id="a1" class="pointer">收不到验证码？</a>
+              </div>
 
-            <div id="other">
-              <!-- <p>其他方式登录</p>
+              <div id="other">
+                <!-- <p>其他方式登录</p>
               <div>
                 <img src="../assets/image/login/支付宝.png" />
                 <img src="../assets/image/login/微信.png" />
                 <img src="../assets/image/login/QQ.png" />
                 <img src="../assets/image/login/微博.png" />
               </div> -->
-            </div>
-          </el-tab-pane>
-        </el-tabs>
+              </div>
+            </el-tab-pane>
+          </el-tabs>
       </div>
       <div id="tail">菠萝公司版权所有-XXXXXX-京公网安备XXX号-京ICP证XXXX号</div>
     </div>
@@ -365,12 +374,11 @@ export default {
         success: (resgitToken) => {
           this.resgitToken = resgitToken;
           this.getPhoneCode();
-          showtime.hide()
+          showtime.hide();
         },
       });
 
       showtime.show();
-
     },
 
     // 登录校验提交
@@ -409,9 +417,9 @@ export default {
       let phoneChenck =
         /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
       if (phoneChenck.test(this.loginList.userName)) {
-        this.loginList.loginType=0;
+        this.loginList.loginType = 0;
       } else {
-        this.loginList.loginType=1;
+        this.loginList.loginType = 1;
       }
 
       const { data: res } = await this.$axios
@@ -447,18 +455,14 @@ export default {
     },
     //注册事件
     async resgit() {
-
-      if(this.checkPhoneShow)
-      {
-        return this.$message.error("手机已被注册")
+      if (this.checkPhoneShow) {
+        return this.$message.error("手机已被注册");
       }
-      if(this.checkNameShow)
-      {
-        return this.$message.error("用户名已被注册")
+      if (this.checkNameShow) {
+        return this.$message.error("用户名已被注册");
       }
-      if(this.resgitToken=="")
-      {
-        return this.$message.error("请先请求手机验证码")
+      if (this.resgitToken == "") {
+        return this.$message.error("请先请求手机验证码");
       }
       const { data: res } = await this.$axios.post(
         "/api/users/resgit",

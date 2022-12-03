@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-18 00:59:52
+ * @LastEditTime: 2022-12-03 20:31:02
  * @FilePath: \pineapplestoer_webui\src\views\Goods.vue
  * @Description: 全部商品页面组件(包括全部商品,商品分类,商品搜索)
  * 
@@ -55,13 +55,16 @@
     <!-- 分类标签END -->
 
     <!-- 主要内容区 -->
+
     <div class="main">
-      <div class="list">
+    
+      <div class="list animate__animated animate__zoomIn" >
         <MyList :list="product" v-if="product.length > 0"></MyList>
         <div v-else class="none-product">
           抱歉没有找到相关的商品，请看看其他的商品
         </div>
       </div>
+
 
       <!-- 分页 -->
       <div class="pagination">

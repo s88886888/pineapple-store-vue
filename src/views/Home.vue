@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:29:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-03 17:46:26
+ * @LastEditTime: 2022-12-03 20:31:56
  * @FilePath: \pineapplestoer_webui\src\views\Home.vue
  * @Description: 
  * 
@@ -25,19 +25,21 @@
 <template>
   <div class="home" id="home" name="home">
     <div class="block" @mouseleave="clover">
-      <!-- 左边导航栏 -->
-      <div id="leftcategoryList">
-        <ul
-          v-for="(item, index) in leftcategoryDataList"
-          :key="item.categoryId"
-        >
-          <li class="blocklist" @mouseenter="getProductStar(index)">
-            <!-- <img width="10px" src="../assets/image/mi-icon.png"/> -->
-            {{ item.categoryName }}
-          </li>
-        </ul>
-      </div>
-      <!-- 左边导航栏end -->
+      
+        <!-- 左边导航栏 -->
+        <div id="leftcategoryList" class="animate__animated animate__backInLeft">
+          <ul
+            v-for="(item, index) in leftcategoryDataList"
+            :key="item.categoryId"
+          >
+            <li class="blocklist" @mouseenter="getProductStar(index)">
+              <!-- <img width="10px" src="../assets/image/mi-icon.png"/> -->
+              {{ item.categoryName }}
+            </li>
+          </ul>
+        </div>
+        <!-- 左边导航栏end -->
+
 
       <!-- 轮播图 -->
       <el-carousel height="460px" class="imgbox">
@@ -51,6 +53,10 @@
       </el-carousel>
       <!-- 轮播图END -->
 
+      <transition
+        enter-active-class="animate__animated animate__fadeInRight"
+        leave-active-class="animate__animated animate__zoomOutRight"
+      >
       <!-- 右边菜单栏 -->
       <div
         id="rightcategoryList"
@@ -76,11 +82,11 @@
           <!-- <img :src="item.url" /> -->
         </div>
       </div>
+    </transition>
       <!-- 右边菜单栏END -->
     </div>
 
     <div class="main-box">
-
       <div class="main">
         <!-- 商品展示区域 -->
         <div>
@@ -93,7 +99,7 @@
                 <img src="https://img1.imgtp.com/2022/12/03/3IRRU9zi.jpg" />
               </router-link>
             </div>
-            <div class="list">
+            <div class="list animate__animated animate__fadeInDown">
               <MyList :list="productDisplayList" :isMore="true"></MyList>
             </div>
           </div>
@@ -104,11 +110,11 @@
         <div class="accessory" id="promo-menu">
           <div class="box-hd">
             <div class="title">菠萝优选</div>
-            <div  class="more" id="more">
+            <div class="more" id="more">
               <MyMenu :val="3" @fromChild="getChildMsg">
-                <span slot="1">{{categoryName[0]}}</span>
-                <span slot="2">{{categoryName[1]}}</span>
-                <span slot="3">{{categoryName[2]}}</span>
+                <span slot="1">{{ categoryName[0] }}</span>
+                <span slot="2">{{ categoryName[1] }}</span>
+                <span slot="3">{{ categoryName[2] }}</span>
               </MyMenu>
             </div>
           </div>
@@ -116,16 +122,22 @@
             <div class="promo-list">
               <ul>
                 <li>
-                  <img src="https://img1.imgtp.com/2022/12/03/204XQpy5.jpg" alt />
+                  <img
+                    src="https://img1.imgtp.com/2022/12/03/204XQpy5.jpg"
+                    alt
+                  />
                 </li>
                 <li>
-                  <img src="https://img1.imgtp.com/2022/12/03/urGCvWJn.jpg" alt />
+                  <img
+                    src="https://img1.imgtp.com/2022/12/03/urGCvWJn.jpg"
+                    alt
+                  />
                 </li>
               </ul>
             </div>
 
             <div class="list">
-              <div id="myList" class="myList">
+              <div id="myList" class="myList animate__animated animate__fadeInUpBig">
                 <ul>
                   <li v-for="(item, index) in accessoryList" :key="index">
                     <router-link
@@ -134,22 +146,41 @@
                         query: { productID: item.productId },
                       }"
                     >
-                      <img
-                        :src="item.imgList[0].url"
-                        alt
-                      />
+                      <img :src="item.imgList[0].url" alt />
                       <h2>{{ item.productName }}</h2>
                       <h3>{{ item.content }}</h3>
 
                       <div>
-                      <p>
-                        <span>{{ (item.skuList[0].originalPrice *item.skuList[0].discounts).toFixed(2) ==undefined?0:(item.skuList[0].originalPrice *item.skuList[0].discounts).toFixed(2)}}元</span
-                        >
-                        <span v-show="item.skuList[0].originalPrice !=item.skuList[0].originalPrice *item.skuList[0].discounts" class="del">
-                          {{ item.skuList.length<=0? 0: item.skuList[0].originalPrice.toFixed(2) }}元</span>
-                      </p>
-                
-                       </div>
+                        <p>
+                          <span
+                            >{{
+                              (
+                                item.skuList[0].originalPrice *
+                                item.skuList[0].discounts
+                              ).toFixed(2) == undefined
+                                ? 0
+                                : (
+                                    item.skuList[0].originalPrice *
+                                    item.skuList[0].discounts
+                                  ).toFixed(2)
+                            }}元</span
+                          >
+                          <span
+                            v-show="
+                              item.skuList[0].originalPrice !=
+                              item.skuList[0].originalPrice *
+                                item.skuList[0].discounts
+                            "
+                            class="del"
+                          >
+                            {{
+                              item.skuList.length <= 0
+                                ? 0
+                                : item.skuList[0].originalPrice.toFixed(2)
+                            }}元</span
+                          >
+                        </p>
+                      </div>
                     </router-link>
                   </li>
 
@@ -167,7 +198,6 @@
                 </ul>
               </div>
             </div>
-
           </div>
         </div>
 
@@ -188,32 +218,31 @@ export default {
       productDisplayList: "", // 特价展示列表
 
       accessoryList: [], //配件商品列表
-      
+
       accessoryHotList: [], //热门配件商品列表
       protectingShellList: [], // 保护套商品列表
       chargerList: [], //充电器商品列表
-      categoryName:[],
-
+      categoryName: [],
 
       accessoryActive: 1, // 当前选中的商品分类
-      categoryId:""
+      categoryId: "",
     };
   },
   watch: {
     accessoryActive(val) {
       if (val == 1) {
         this.accessoryList = this.accessoryHotList;
-        this.categoryId=this.accessoryList[0].categoryId;
+        this.categoryId = this.accessoryList[0].categoryId;
         return;
       }
       if (val == 2) {
         this.accessoryList = this.protectingShellList;
-        this.categoryId=this.accessoryList[0].categoryId;
+        this.categoryId = this.accessoryList[0].categoryId;
         return;
       }
       if (val == 3) {
         this.accessoryList = this.chargerList;
-        this.categoryId=this.accessoryList[0].categoryId;
+        this.categoryId = this.accessoryList[0].categoryId;
         return;
       }
     },
@@ -294,16 +323,14 @@ export default {
       );
       if (res.code == 200) {
         this.accessoryList = res.data;
-        for(let i =0; i<this.accessoryList.length;i++)
-        {
+        for (let i = 0; i < this.accessoryList.length; i++) {
           this.categoryName.push(this.accessoryList[i].categoryName);
         }
         this.accessoryHotList = this.accessoryList[0].productList;
         this.protectingShellList = this.accessoryList[1].productList;
         this.chargerList = this.accessoryList[2].productList;
         this.accessoryList = this.accessoryList[0].productList;
-        this.categoryId=this.accessoryList[0].categoryId;
-
+        this.categoryId = this.accessoryList[0].categoryId;
       } else {
         return this.$message.error(res.msg);
       }

@@ -7,9 +7,8 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 Vue.use(ElementUI);
 
-// 全局函数及变量
-// import Global from './Global';
-// Vue.use(Global);
+import animated from 'animate.css';
+Vue.use(animated)
 
 import Axios from "axios";
 Vue.prototype.$axios = Axios;

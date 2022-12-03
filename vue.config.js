@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:41:22
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-27 16:32:32
+ * @LastEditTime: 2022-12-03 19:59:51
  * @FilePath: \pineapplestoer_webui\vue.config.js
  * @Description: 
  * 
@@ -39,8 +39,8 @@ module.exports = {
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:8081/', // 本地后端地址
-        // target: 'http://121.4.154.210:8081/', // 线上后端地址
+        // target: 'http://localhost:8081/', // 本地后端地址
+        target: 'http://121.4.154.210:8081/', // 线上后端地址
         changeOrigin: true, //允许跨域
         pathRewrite: {
           '^/api': ''
