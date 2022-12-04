@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 03:56:36
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-03 20:04:44
+ * @LastEditTime: 2022-12-04 15:52:43
  * @FilePath: \pineapplestoer_webui\src\views\Login.vue
  * @Description: 登录注册
  * 
@@ -362,7 +362,7 @@ export default {
         return this.$message.error("手机号码格式错误！");
       }
 
-      if (this.checkNameShow) {
+      if (this.checkPhoneShow) {
         return this.$message.error("手机已经被注册！");
       }
 
