@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:41:22
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-04 15:50:59
+ * @LastEditTime: 2022-12-04 15:59:15
  * @FilePath: \pineapplestoer_webui\vue.config.js
  * @Description: 
  * 
@@ -36,7 +36,7 @@ module.exports = {
   },
   devServer: {
     open: false,
-    port: 3000,
+    port: 80,
     proxy: {
       '/api': {
         // target: 'http://localhost:8081/', // 本地后端地址
