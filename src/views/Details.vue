@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-03 20:48:20
+ * @LastEditTime: 2022-12-07 00:42:58
  * @FilePath: \pineapplestoer_webui\src\views\Details.vue
  * @Description: 
  * 
@@ -24,10 +24,6 @@
  -->
 
 
-
-
-
- 
 <template>
   <div id="details">
     <!-- 头部 -->
@@ -179,8 +175,8 @@ export default {
     // 加入购物车
     addShoppingCart() {
       // 判断是否登录,没有登录则显示登录组件
-      if (!this.$store.getters.getUser) {
-        this.$store.dispatch("setShowLogin", true);
+      if (!this.$store.getters.getUser||!localStorage.getItem("token")) {
+        this.$router.push("/login");
         return;
       }
       this.$axios

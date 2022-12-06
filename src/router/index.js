@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:26:08
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-21 23:36:47
+ * @LastEditTime: 2022-12-07 00:24:54
  * @FilePath: \pineapplestoer_webui\src\router\index.js
  * @Description: 
  * 
@@ -25,7 +25,7 @@
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+
 
 
 
@@ -78,51 +78,43 @@ const routes = [
     path: '/shoppingCart',
     name: 'ShoppingCart',
     meta:{
-      title:"菠萝商城-购物车"
+      requireAuth: true, // 需要验证登录状态
+      title:"购物车-菠萝商城"
     },
     component: () => import('../views/ShoppingCart.vue'),
-    meta: {
-      requireAuth: true // 需要验证登录状态
-    }
   },
   {
     path: '/collect',
     name: 'Collect',
     meta:{
-      title:"菠萝商城-收藏夹"
+      requireAuth: true, // 需要验证登录状态
+      title:"收藏夹-菠萝商城"
     },
     component: () => import('../views/Collect.vue'),
-    meta: {
-      requireAuth: true // 需要验证登录状态
-    }
   },
   {
     path: '/order',
     name: 'Order',
     meta:{
-      title:"菠萝商城-我的订单"
+      requireAuth: true, // 需要验证登录状态
+      title:"我的订单-菠萝商城"
     },
     component: () => import('../views/Order.vue'),
-    meta: {
-      requireAuth: true // 需要验证登录状态
-    }
   },
   {
     path: '/confirmOrder',
     name: 'ConfirmOrder',
     meta:{
+      requireAuth: true, // 需要验证登录状态
       title:"菠萝商城-确认订单"
     },
     component: () => import('../views/ConfirmOrder.vue'),
-    meta: {
-      requireAuth: true // 需要验证登录状态
-    }
   },
   {
     path: '/login',
     name: 'Login',
     meta:{
-      title:"菠萝商城-登录"
+      title:"登录-菠萝商城"
     },
     component: () => import('../views/Login.vue')
   },
@@ -130,7 +122,8 @@ const routes = [
     path: '/orderAlipay',
     name: 'OrderAlipay',
     meta:{
-      title:"菠萝商城-支付"
+      requireAuth: true, // 需要验证登录状态
+      title:"支付-菠萝商城"
     },
     component: () => import('../views/orderAlipay.vue')
   }
@@ -145,9 +138,10 @@ const router = new VueRouter({
 })
 
 
-router.beforeEach((to,from,next)=>{//beforeEach是router的钩子函数，在进入路由前执行
+router.beforeEach((to,from,next)=>{
+  //beforeEach是router的钩子函数，在进入路由前执行
   if(to.meta.title){//判断是否有标题
-      document.title = to.meta.title
+    document.title = to.meta.title
   }
   next()  //执行进入路由，如果不写就不会进入目标页
 })

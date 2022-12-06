@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-03 15:58:01
+ * @LastEditTime: 2022-12-07 00:21:26
  * @FilePath: \pineapplestoer_webui\src\views\Order.vue
  * @Description: 我的订单页面组件
  * 
@@ -115,6 +115,7 @@
 <script>
 import qs from "qs";
 export default {
+  name:'Order',
   data() {
     return {
       orders: [], // 订单列表
