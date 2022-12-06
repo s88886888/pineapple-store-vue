@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:41:22
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-16 23:38:02
+ * @LastEditTime: 2022-12-06 23:52:34
  * @FilePath: \pineapplestoer_webui\src\App.vue
  * @Description: 
  * 
@@ -35,12 +35,6 @@
       <Header v-show="!(path =='/login')"></Header>
 
 
-      
-
-      <!-- 登录模块 -->
-      <!-- <MyLogin></MyLogin> -->
-     <!-- 注册模块 -->
-     <!-- <MyRegister :register="register" @fromChild="isRegister"></MyRegister> -->
 
       <!-- 主要区域容器 -->
       <el-main>
