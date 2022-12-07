@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:28:01
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-08 02:43:48
+ * @LastEditTime: 2022-12-08 02:45:49
  * @FilePath: \pineapplestoer_webui\src\components\Header.vue
  * @Description: 
  * 
@@ -60,15 +60,10 @@ export default {
   data() {
     return {
       activeIndex: "", // 头部导航栏选中的标签
-      search: "", // 搜索条件
-      register: false, // 是否显示注册组件
+      search: "" // 搜索条件
     };
   },
   methods: {
-    // 接收注册子组件传过来的数据
-    isRegister(val) {
-      this.register = val;
-    },
     // 点击搜索按钮
     searchClick() {
       if (this.search != "") {

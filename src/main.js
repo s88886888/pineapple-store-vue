@@ -6,9 +6,8 @@ import store from "./store";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 Vue.use(ElementUI);
-
 import "animate.css";
-// Vue.use(animate);
+
 
 
 
@@ -113,10 +112,6 @@ Vue.component(MyMenu.name, MyMenu);
 import MyList from "./components/MyList";
 Vue.component(MyList.name, MyList);
 
-// import MyLogin from './components/MyLogin';
-// Vue.component(MyLogin.name, MyLogin);
-// import MyRegister from './components/MyRegister';
-// Vue.component(MyRegister.name, MyRegister);
 
 Vue.config.productionTip = false;
 
