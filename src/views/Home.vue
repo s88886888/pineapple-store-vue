@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:29:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-03 20:51:26
+ * @LastEditTime: 2022-12-07 03:49:21
  * @FilePath: \pineapplestoer_webui\src\views\Home.vue
  * @Description: 
  * 
@@ -190,7 +190,9 @@
                         path: '/goods',
                         query: { categoryID: categoryId },
                       }"
+                    
                     >
+                      <!-- target='_blank' -->
                       浏览更多
                       <i class="el-icon-d-arrow-right"></i>
                     </router-link>

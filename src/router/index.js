@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:26:08
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-07 00:24:54
+ * @LastEditTime: 2022-12-08 02:36:06
  * @FilePath: \pineapplestoer_webui\src\router\index.js
  * @Description: 
  * 
@@ -88,7 +88,7 @@ const routes = [
     name: 'Collect',
     meta:{
       requireAuth: true, // 需要验证登录状态
-      title:"收藏夹-菠萝商城"
+      title:"收藏夹-菠萝商城",
     },
     component: () => import('../views/Collect.vue'),
   },
@@ -97,7 +97,7 @@ const routes = [
     name: 'Order',
     meta:{
       requireAuth: true, // 需要验证登录状态
-      title:"我的订单-菠萝商城"
+      title:"我的订单-菠萝商城",
     },
     component: () => import('../views/Order.vue'),
   },

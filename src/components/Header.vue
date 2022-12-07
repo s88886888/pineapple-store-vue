@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:28:01
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-20 17:38:04
+ * @LastEditTime: 2022-12-07 04:17:35
  * @FilePath: \pineapplestoer_webui\src\components\Header.vue
  * @Description: 
  * 
@@ -40,8 +40,6 @@
           </div>
           <el-menu-item index="/">首页</el-menu-item>
           <el-menu-item index="/goods">全部商品</el-menu-item>
-          <!-- <el-menu-item index="/about">关于我们</el-menu-item> -->
-
           <div class="so">
             <el-input placeholder="请输入搜索内容" v-model="search">
               <el-button slot="append" icon="el-icon-search" @click="searchClick"></el-button>
