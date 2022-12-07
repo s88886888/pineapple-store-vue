@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:28:01
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-07 04:17:35
+ * @LastEditTime: 2022-12-08 02:43:48
  * @FilePath: \pineapplestoer_webui\src\components\Header.vue
  * @Description: 
  * 
@@ -35,7 +35,7 @@
         >
           <div class="logo">
             <router-link to="/">
-              <img  src="../assets/pl_Logo_h.png" alt />
+              <img  src="../assets/imgs/pl_Logo_h.png" alt />
             </router-link>
           </div>
           <el-menu-item index="/">首页</el-menu-item>

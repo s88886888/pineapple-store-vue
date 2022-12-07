@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-07 00:42:58
+ * @LastEditTime: 2022-12-08 02:41:08
  * @FilePath: \pineapplestoer_webui\src\views\Details.vue
  * @Description: 
  * 
@@ -203,7 +203,7 @@ export default {
               this.$message.success(res.data.msg);
               break;
 
-            // case "003":
+            // case "203":
             //   // 商品数量达到限购数量
             //   this.dis = true;
             //   this.$message.error(res.data.msg);
@@ -220,8 +220,8 @@ export default {
     },
     addCollect() {
       // 判断是否登录,没有登录则显示登录组件
-      if (!this.$store.getters.getUser) {
-        this.$store.dispatch("setShowLogin", true);
+      if (!this.$store.getters.getUser||!localStorage.getItem("token")) {
+        this.$router.push("/login");
         return;
       }
       this.$axios
@@ -231,7 +231,7 @@ export default {
           categoryId:this.productPicture[0].categoryId
           
         })
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 200) {
             // 添加收藏成功
             this.$message.success(res.data.msg);
