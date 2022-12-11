@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-12-11 09:32:48
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-11 11:36:57
+ * @LastEditTime: 2022-12-11 11:45:12
  * @FilePath: \pineapplestoer_webui\src\views\pay.vue
  * @Description: 
  * 
@@ -272,7 +272,7 @@ export default {
         this.$message.error("您的浏览器不支持WebSocket，无法获取数据");
         return false;
       } else {
-        let Url = "ws://localhost:8081/pay/" + this.payOrderId;
+        let Url = "ws://121.4.154.210:8081/pay/" + this.payOrderId;
         // 实例化socket
         this.socket = new WebSocket(Url);
 
