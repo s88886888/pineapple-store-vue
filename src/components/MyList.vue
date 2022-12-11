@@ -1,5 +1,5 @@
 <template>
-  <div id="myList" class="myList">
+  <div id="myList" class="myList" >
     <ul>
       <li v-for="(item, index) in list" :key="index">
         <el-popover placement="top">

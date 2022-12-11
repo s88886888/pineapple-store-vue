@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-08 02:34:17
+ * @LastEditTime: 2022-12-11 11:09:05
  * @FilePath: \pineapplestoer_webui\src\views\Goods.vue
  * @Description: 全部商品页面组件(包括全部商品,商品分类,商品搜索)
  * 
@@ -81,6 +81,7 @@
 </template>
 <script>
 export default {
+  name:"Goods",
   data() {
     return {
       categoryList: "", //分类列表
@@ -97,8 +98,12 @@ export default {
   created() {
     // 获取分类列表
     this.getCategory();
-  },
-  activated() {
+
+    // console.log(this.$route.query, "1111111111111111");
+
+    // console.log(this.$route.query.search, "search");
+    // console.log(this.$route.query.categoryID, "categoryID");
+
     this.activeName = "-1"; // 初始化分类列表当前选中的id为-1
     this.total = 0; // 初始化商品总量为0
     this.currentPage = 1; //初始化当前页码为1
@@ -121,8 +126,43 @@ export default {
     // 如果路由传递了search，则为搜索，显示对应的分类商品
     if (this.$route.query.search != undefined) {
       this.search = this.$route.query.search;
+      // 8888888888 防止延迟查询 88888888888//
+      // this.getProductBySearch(this.search);
     }
   },
+  //关闭缓存了 傻逼缓存延迟性能
+  // activated() {
+  //   // console.log(this.$route.query, "1111111111111111");
+
+  //   // console.log(this.$route.query.search, "search");
+  //   // console.log(this.$route.query.categoryID, "categoryID");
+
+  //   this.activeName = "-1"; // 初始化分类列表当前选中的id为-1
+  //   this.total = 0; // 初始化商品总量为0
+  //   this.currentPage = 1; //初始化当前页码为1
+
+  //   // 如果路由没有传递参数，默认为显示全部商品
+  //   if (Object.keys(this.$route.query).length == 0) {
+  //     this.categoryID = [];
+  //     this.activeName = "0";
+  //     return;
+  //   }
+
+  //   // 如果路由传递了categoryID，则显示对应的分类商品
+  //   if (this.$route.query.categoryID != undefined) {
+  //     this.categoryID = this.$route.query.categoryID;
+  //     if (this.categoryID.length == 1) {
+  //       this.activeName = "" + this.categoryID[0];
+  //     }
+  //     return;
+  //   }
+  //   // 如果路由传递了search，则为搜索，显示对应的分类商品
+  //   if (this.$route.query.search != undefined) {
+  //     this.search = this.$route.query.search;
+  //     // 8888888888 防止延迟查询 88888888888//
+  //     this.getProductBySearch(this.search);
+  //   }
+  // },
 
   watch: {
     // 监听点击了哪个分类标签，通过修改分类id，响应相应的商品
@@ -157,13 +197,13 @@ export default {
       this.search = "";
     },
     // 监听路由变化，更新路由传递了搜索条件
-    $route: function (val) {
+    $route(val) {
       if (val.path == "/goods") {
         if (val.query.search != undefined) {
+          this.search = val.query.search;
           this.activeName = "-1";
           this.currentPage = 1;
           this.total = 0;
-          this.search = val.query.search;
         }
       }
     },

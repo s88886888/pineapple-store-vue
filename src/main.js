@@ -79,12 +79,14 @@ router.beforeResolve((to, from, next) => {
 // 格式: 2022-10-25 22:22:22
 Vue.filter("dateFormat", (dataStr) => {
   var time = new Date(dataStr);
+
   function timeAdd0(str) {
     if (str < 10) {
       str = "0" + str;
     }
     return str;
   }
+  
   var y = time.getFullYear();
   var m = time.getMonth() + 1;
   var d = time.getDate();

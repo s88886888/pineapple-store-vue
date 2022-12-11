@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-03 20:55:20
+ * @LastEditTime: 2022-12-11 11:24:11
  * @FilePath: \pineapplestoer_webui\src\views\ConfirmOrder.vue
  * @Description: 
  * 
@@ -163,7 +163,7 @@
             </li>
             <li>
               <span class="title">商品总价：</span>
-              <span class="value">{{ (getTotalPrice).toFixed(2) }}元</span>
+              <span class="value">{{ getTotalPrice.toFixed(2) }}元</span>
             </li>
             <li>
               <span class="title">活动优惠：</span>
@@ -180,7 +180,7 @@
             <li class="total">
               <span class="title">应付总额：</span>
               <span class="value">
-                <span class="total-price">{{ (getTotalPrice).toFixed(2) }}</span
+                <span class="total-price">{{ getTotalPrice.toFixed(2) }}</span
                 >元
               </span>
             </li>
@@ -206,28 +206,12 @@
       <!-- 结算导航END -->
     </div>
 
-    <el-dialog
-      title="支付小助手"
-      :visible.sync="checkPay"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <span>请问您是否已经完成支付</span>
-      <!-- <img></img> -->
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="alipay">继续前往支付</el-button>
-        <el-button type="primary" @click="checkOrderPay"
-          >我已经完成支付</el-button
-        >
-      </span>
-    </el-dialog>
-
     <!-- 主要内容容器END -->
   </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
-import qs from "qs";
+
 import { mapActions } from "vuex";
 import {
   provinceAndCityData,
@@ -255,10 +239,8 @@ export default {
       addressList: [],
       //隐藏数据后的地址列表
       addressHide: [],
-      //跳转支付宝支付的订单
-      payOrderId: "",
-      //检测用户是否真的支付
-      checkPay: false,
+
+
     };
   },
   created() {
@@ -308,40 +290,6 @@ export default {
       this.confirmAddress = val;
     },
 
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then((_) => {
-          this.$axios
-            .get("/api/orders/getId/" + this.payOrderId)
-            .then((res) => {
-              if (res.data.code == 200) {
-                if (res.data.data.status === "1") {
-                  let products = this.getCheckGoods;
-                  for (let i = 0; i < products.length; i++) {
-                    const temp = products[i];
-                    // 删除已经结算的购物车商品
-                    this.deleteShoppingCart(temp.cartId);
-                  }
-                  this.checkPay = false;
-                  this.$message.error("系统检测到您，未完成支付");
-                  return this.$router.push({ path: "/order" });
-                } else if (res.data.data.status === "2") {
-                  let products = this.getCheckGoods;
-                  for (let i = 0; i < products.length; i++) {
-                    const temp = products[i];
-                    // 删除已经结算的购物车商品
-                    this.deleteShoppingCart(temp.cartId);
-                  }
-                  this.checkPay = false;
-                  this.$message.success("恭喜您成功支付");
-                  this.$router.push({ path: "/order" });
-                }
-              }
-            });
-          done();
-        })
-        .catch((_) => {});
-    },
 
     handleCloses(done) {
       this.$confirm("确认关闭？")
@@ -375,27 +323,24 @@ export default {
           productList: this.getCheckGoods,
         })
         .then((res) => {
-          // let products = this.getCheckGoods;
-
           switch (res.data.code) {
             case 200:
-              // for (let i = 0; i < products.length; i++) {
-              //   const temp = products[i];
-              //   // 删除已经结算的购物车商品
-              //   this.deleteShoppingCart(temp.cartId);
-              // }
+
 
               // 提示结算结果
               this.$message.success("成功确定订单，请先支付");
-
-              // 跳转我的订单页面
-              // this.$router.push({ path: "/order" });
-
-              // console.log(res.data.data.orderId);
               this.payOrderId = res.data.data.orderId;
+              let products = this.getCheckGoods;
+              for (let i = 0; i < products.length; i++) {
+                const temp = products[i];
+                // 删除已经结算的购物车商品
+                this.deleteShoppingCart(temp.cartId);
+              }
 
-              this.alipay();
-
+              this.$router.push({
+                path: "/pay",
+                query: { OrderId: this.payOrderId },
+              });
               break;
             default:
               // 提示失败信息
@@ -455,51 +400,10 @@ export default {
       }
     },
 
-    alipay() {
-      if (this.payOrderId == "") {
-        return this.$message.error("未结算订单");
-      }
 
-      this.$axios
-        .post("/api/orders/pay", qs.stringify({ orderId: this.payOrderId }))
-        .then((res) => {
-          if (res.data.code == 200) {
-            let routerData = this.$router.resolve({
-              path: "/orderAlipay",
-              query: { htmlData: res.data.data },
-            });
-            // 打开新页面
-            this.checkPay = true;
-            window.open(routerData.href, "_ blank");
-          } else {
-            this.$message.error(res.data.msg);
-          }
-        });
-    },
 
-    checkOrderPay() {
-      if (this.payOrderId == "") {
-        return this.$message.error("请您先结算订单");
-      }
 
-      this.$axios.get("/api/orders/getId/" + this.payOrderId).then((res) => {
-        if (res.data.code == 200) {
-          if (res.data.data.status === "1") {
-            return this.$message.error("系统检测到您，未完成支付");
-          } else if (res.data.data.status === "2") {
-            let products = this.getCheckGoods;
-            for (let i = 0; i < products.length; i++) {
-              const temp = products[i];
-              // 删除已经结算的购物车商品
-              this.deleteShoppingCart(temp.cartId);
-            }
-            this.checkPay = false;
-            this.$message.success("恭喜您成功支付");
-            this.$router.push({ path: "/order" });
-          }
-        }
-      });
-    },
+
   },
 };
 </script>

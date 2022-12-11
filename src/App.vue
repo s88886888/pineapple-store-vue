@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:41:22
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-08 02:09:47
+ * @LastEditTime: 2022-12-11 11:07:30
  * @FilePath: \pineapplestoer_webui\src\App.vue
  * @Description: 
  * 
@@ -38,7 +38,7 @@
 
       <!-- 主要区域容器 -->
       <el-main>
-        <keep-alive>
+        <keep-alive exclude="pay,Goods">
           <router-view></router-view>
         </keep-alive>
       </el-main>

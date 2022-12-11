@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:26:08
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-08 02:36:06
+ * @LastEditTime: 2022-12-11 09:37:09
  * @FilePath: \pineapplestoer_webui\src\router\index.js
  * @Description: 
  * 
@@ -126,6 +126,15 @@ const routes = [
       title:"支付-菠萝商城"
     },
     component: () => import('../views/orderAlipay.vue')
+  },
+  {
+    path: '/pay',
+    name: 'Pay',
+    meta:{
+      requireAuth: true, // 需要验证登录状态
+      title:"支付-菠萝商城"
+    },
+    component: () => import('../views/pay.vue')
   }
 ]
 

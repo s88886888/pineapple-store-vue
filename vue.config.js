@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:41:22
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-08 02:00:29
+ * @LastEditTime: 2022-12-11 11:31:01
  * @FilePath: \pineapplestoer_webui\vue.config.js
  * @Description: 
  * 

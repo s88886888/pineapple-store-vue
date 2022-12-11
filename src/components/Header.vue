@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:28:01
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-08 02:45:49
+ * @LastEditTime: 2022-12-08 21:48:20
  * @FilePath: \pineapplestoer_webui\src\components\Header.vue
  * @Description: 
  * 
@@ -66,11 +66,11 @@ export default {
   methods: {
     // 点击搜索按钮
     searchClick() {
-      if (this.search != "") {
+      // if (this.search != "") {
         // 跳转到全部商品页面,并传递搜索条件
         this.$router.push({ path: "/goods", query: { search: this.search } });
         this.search = "";
-      }
+      // }
     },
   },
 };

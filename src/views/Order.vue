@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-07 00:21:26
+ * @LastEditTime: 2022-12-10 18:44:47
  * @FilePath: \pineapplestoer_webui\src\views\Order.vue
  * @Description: 我的订单页面组件
  * 
@@ -88,7 +88,7 @@
           <div class="order-bar-right">
 
             <span>
-              <el-button v-if="item.status === '1'" @click="alipay(item.orderId)">支付</el-button>
+              <el-button  v-if="item.status === '1'" @click="alipay(item.orderId)">支付</el-button>
               <el-button v-if="item.status === '1'" style="padding-right: 20px">取消</el-button>
 
               <span class="total-price-title">合计：</span>
