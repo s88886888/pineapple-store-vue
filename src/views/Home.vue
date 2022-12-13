@@ -16,13 +16,13 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:29:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-08 02:53:02
+ * @LastEditTime: 2022-12-14 02:48:10
  * @FilePath: \pineapplestoer_webui\src\views\Home.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by Linson 854700937@qq.com, All Rights Reserved. 
  -->
-<template>
+ <template>
   <div class="home" id="home" name="home">
     <div class="block" @mouseleave="clover">
       
@@ -219,12 +219,12 @@ export default {
       rightcategoryDataListShow: "", //轮播右菜单个列表
       productDisplayList: "", // 特价展示列表
 
-      accessoryList: [], //配件商品列表
+      accessoryList: [],
 
-      accessoryHotList: [], //热门配件商品列表
-      protectingShellList: [], // 保护套商品列表
-      chargerList: [], //充电器商品列表
-      categoryName: [],
+      accessoryHotList: [],
+      protectingShellList: [],
+      chargerList: [],
+      categoryName: ["数据1","数据2","数据3"],
 
       accessoryActive: 1, // 当前选中的商品分类
       categoryId: "",
@@ -325,9 +325,16 @@ export default {
       );
       if (res.code == 200) {
         this.accessoryList = res.data;
+
+        if(this.categoryName.length==3)
+        {
+          this.categoryName=[];
+        }
+
         for (let i = 0; i < this.accessoryList.length; i++) {
           this.categoryName.push(this.accessoryList[i].categoryName);
         }
+        
         this.accessoryHotList = this.accessoryList[0].productList;
         this.protectingShellList = this.accessoryList[1].productList;
         this.chargerList = this.accessoryList[2].productList;
