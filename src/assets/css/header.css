@@ -3,21 +3,46 @@
   max-width: 1225px;
   margin: 0 auto;
 }
+
 .el-header .logo {
   height: 60px;
-  width: 189px;
+  /* width: 200px; */
   float: left;
-  margin-right: 100px;
+  margin-right: 60px;
 }
-.el-header .logo img {
-  /* height: 60px; */
-  width: 220px;
-  /* float: left;
-  margin-right: 100px; */
-}
+
 .el-header .so {
   margin-top: 10px;
   width: 300px;
   float: right;
 }
+
+.logo-img {
+  /* width: 51px; */
+  height: 50px;
+  /* padding-left: 10px; */
+  /* display: inline-block; */
+  /* border: 1px solid red; */
+
+}
+.logo-img-go{
+  /* width: 51px; */
+  height: 50px;
+  /* padding-left: 10px; */
+  /* border: 1px solid red; */
+}
+
+.logo-title {
+  width: 180px;
+  padding-left: 10px;
+  /* margin-left: 10px; */
+  /* margin-bottom: 5px; */
+  /* display: inline-block; */
+}
+
+.logo {
+  width: 260px;
+  /* border: 1px solid red; */
+}
+
 /* 顶栏容器CSS END */
