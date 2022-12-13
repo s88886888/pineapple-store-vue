@@ -16,30 +16,28 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:29:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-14 02:48:10
+ * @LastEditTime: 2022-12-14 02:55:25
  * @FilePath: \pineapplestoer_webui\src\views\Home.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by Linson 854700937@qq.com, All Rights Reserved. 
  -->
- <template>
+<template>
   <div class="home" id="home" name="home">
     <div class="block" @mouseleave="clover">
-      
-        <!-- 左边导航栏 -->
-        <div id="leftcategoryList" class="animate__animated animate__backInLeft">
-          <ul
-            v-for="(item, index) in leftcategoryDataList"
-            :key="item.categoryId"
-          >
-            <li class="blocklist" @mouseenter="getProductStar(index)">
-              <!-- <img width="10px" src="../assets/image/mi-icon.png"/> -->
-              {{ item.categoryName }}
-            </li>
-          </ul>
-        </div>
-        <!-- 左边导航栏end -->
-
+      <!-- 左边导航栏 -->
+      <div id="leftcategoryList" class="animate__animated animate__backInLeft">
+        <ul
+          v-for="(item, index) in leftcategoryDataList"
+          :key="item.categoryId"
+        >
+          <li class="blocklist" @mouseenter="getProductStar(index)">
+            <!-- <img width="10px" src="../assets/image/mi-icon.png"/> -->
+            {{ item.categoryName }}
+          </li>
+        </ul>
+      </div>
+      <!-- 左边导航栏end -->
 
       <!-- 轮播图 -->
       <el-carousel height="460px" class="imgbox">
@@ -57,32 +55,32 @@
         enter-active-class="animate__animated animate__fadeInRight"
         leave-active-class="animate__animated animate__zoomOutRight"
       >
-      <!-- 右边菜单栏 -->
-      <div
-        id="rightcategoryList"
-        @mouseleave="clover"
-        v-show="righcategoryListShow"
-      >
+        <!-- 右边菜单栏 -->
         <div
-          v-for="(item, index) in rightcategoryDataListShow"
-          :key="item.productId"
+          id="rightcategoryList"
+          @mouseleave="clover"
+          v-show="righcategoryListShow"
         >
-          <router-link
-            :to="{
-              path: '/goods/details',
-              query: { productID: item.productId },
-            }"
+          <div
+            v-for="(item, index) in rightcategoryDataListShow"
+            :key="item.productId"
           >
-            <p>
-              {{ item.productName }}
-            </p>
-          </router-link>
+            <router-link
+              :to="{
+                path: '/goods/details',
+                query: { productID: item.productId },
+              }"
+            >
+              <p>
+                {{ item.productName }}
+              </p>
+            </router-link>
 
-          <img :src="item.imgList[0].url" />
-          <!-- <img :src="item.url" /> -->
+            <img :src="item.imgList[0].url" />
+            <!-- <img :src="item.url" /> -->
+          </div>
         </div>
-      </div>
-    </transition>
+      </transition>
       <!-- 右边菜单栏END -->
     </div>
 
@@ -137,9 +135,12 @@
             </div>
 
             <div class="list">
-              <div id="myList" class="myList animate__animated animate__fadeInUpBig">
+              <div
+                id="myList"
+                class="myList animate__animated animate__fadeInUpBig"
+              >
                 <ul>
-                  <li v-for="(item, index) in accessoryList" :key="index">
+                  <li  v-if="accessoryList.length > 1" v-for="(item, index) in accessoryList" :key="index">
                     <router-link
                       :to="{
                         path: '/goods/details',
@@ -190,7 +191,6 @@
                         path: '/goods',
                         query: { categoryID: categoryId },
                       }"
-                    
                     >
                       <!-- target='_blank' -->
                       浏览更多
@@ -224,7 +224,7 @@ export default {
       accessoryHotList: [],
       protectingShellList: [],
       chargerList: [],
-      categoryName: ["数据1","数据2","数据3"],
+      categoryName: ["数据1", "数据2", "数据3"],
 
       accessoryActive: 1, // 当前选中的商品分类
       categoryId: "",
@@ -326,15 +326,21 @@ export default {
       if (res.code == 200) {
         this.accessoryList = res.data;
 
-        if(this.categoryName.length==3)
+
+        if(this.accessoryList.length==0)
         {
-          this.categoryName=[];
+          return this.$message.error("管理员未设置分类推荐");
+        }
+        if (this.categoryName.length == 3) {
+          this.categoryName = [];
         }
 
         for (let i = 0; i < this.accessoryList.length; i++) {
           this.categoryName.push(this.accessoryList[i].categoryName);
         }
+
         
+
         this.accessoryHotList = this.accessoryList[0].productList;
         this.protectingShellList = this.accessoryList[1].productList;
         this.chargerList = this.accessoryList[2].productList;
