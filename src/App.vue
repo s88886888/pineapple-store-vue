@@ -30,12 +30,8 @@
       
       <!-- 顶部导航栏 -->
       <top v-if="!(path ==='/login')" ></top>
-
       <!-- 顶栏容器 -->
       <Header v-show="!(path =='/login')"></Header>
-
-
-
       <!-- 主要区域容器 -->
       <el-main>
         <keep-alive exclude="pay,Goods">
@@ -43,8 +39,6 @@
         </keep-alive>
       </el-main>
       <!-- 主要区域容器END -->
-
-      
       <!-- 底栏容器 -->
       <el-footer>
         <Footer v-if="!(path ==='/login')"></Footer>
@@ -60,7 +54,6 @@ import top from "../src/components/top.vue";
 import Header from "../src/components/Header.vue";
 import Footer from "./components/Footer.vue";
 
-
 export default {
   name: 'App',
   components: {
@@ -75,7 +68,6 @@ export default {
   },
   mounted() {
           this.path = this.$route.path;
-          // console.log(this.$route.path)
         },
         watch:{
             $route(to,from){
