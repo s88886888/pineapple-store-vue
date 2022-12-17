@@ -26,8 +26,6 @@
  <template>
   <div>
     <el-container>
-
-      
       <!-- 顶部导航栏 -->
       <top v-if="!(path ==='/login')" ></top>
       <!-- 顶栏容器 -->
