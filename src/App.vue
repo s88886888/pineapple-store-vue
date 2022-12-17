@@ -42,9 +42,7 @@
         <Footer v-if="!(path ==='/login')"></Footer>
       </el-footer>
       <!-- 底栏容器END -->
-
     </el-container>
-
   </div>
 </template>
 <script>
