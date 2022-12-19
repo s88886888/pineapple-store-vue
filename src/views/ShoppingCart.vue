@@ -86,7 +86,7 @@
                 path: '/goods/details',
                 query: { productID: item.productId },
               }"
-              >{{ item.productName }}</router-link
+              >{{ item.productName+ '\xa0'+'\xa0'+'\xa0'+item.skuName }}</router-link
             >
           </div>
 

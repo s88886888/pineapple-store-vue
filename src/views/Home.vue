@@ -86,7 +86,7 @@
 
     <div class="main-box">
       <div class="main">
-        <!-- 商品展示区域 -->
+        <!-- 菠萝推荐 -->
         <div>
           <div class="box-hd">
             <div class="title">菠萝推荐</div>
@@ -102,9 +102,9 @@
             </div>
           </div>
         </div>
-        <!-- 商品展示区域END -->
+        <!-- 菠萝推荐END -->
 
-        <!-- 配件商品展示区域 -->
+        <!-- 菠萝优选区域 -->
         <div class="accessory" id="promo-menu">
           <div class="box-hd">
             <div class="title">菠萝优选</div>
@@ -203,7 +203,7 @@
           </div>
         </div>
 
-        <!-- 配件商品展示区域END -->
+        <!-- 菠萝优选区域END -->
       </div>
     </div>
   </div>
@@ -217,7 +217,7 @@ export default {
       leftcategoryDataList: "", //轮播左菜单列表，
       rightcategoryDataList: [], //轮播右菜单全部列表
       rightcategoryDataListShow: "", //轮播右菜单个列表
-      productDisplayList: "", // 特价展示列表
+      productDisplayList: "", // 菠萝推荐
 
       accessoryList: [],
 
@@ -316,6 +316,7 @@ export default {
         return this.$message.error(res.msg);
       } else {
         this.productDisplayList = res.data;
+        console.log(this.productDisplayList,"你XX");
       }
     },
     //获取分类推荐

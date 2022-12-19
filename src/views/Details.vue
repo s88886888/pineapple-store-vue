@@ -28,7 +28,7 @@
     <!-- 头部 -->
     <div class="page-header">
       <div class="title">
-        <p>{{ productDetails.product_name }}</p>
+        <p>{{ productDetails.productName }}</p>
         <div class="list">
           <ul>
             <li>
@@ -51,17 +51,17 @@
       <!-- 左侧商品轮播图 -->
 
       <div class="blockdetalis animate__animated animate__zoomIn">
-        <el-carousel height="560px" v-if="productPicture.length > 1">
-          <el-carousel-item v-for="item in productPicture" :key="item.id">
+        <el-carousel height="560px" v-if="productDetails.imgList.length > 1">
+          <el-carousel-item
+            v-for="item in productDetails.imgList"
+            :key="item.id"
+          >
             <img style="height: 560px" :src="item.url" />
           </el-carousel-item>
         </el-carousel>
 
-        <div v-if="productPicture.length == 1">
-          <img
-            style="height: 560px; width: 560px"
-            :src="productPicture[0].url"
-          />
+        <div v-if="productDetails.imgList.length == 1">
+          <img style="height: 560px; width: 560px" :src="productDetails.url" />
         </div>
       </div>
       <!-- 左侧商品轮播图END -->
@@ -93,12 +93,25 @@
 
         <div class="pro-sku animate__animated animate__zoomIn">
           <h2>选择套餐</h2>
-          <div class="skubox" v-for="(item, index) in 2">
+          <div
+            v-if="productDetails.skuList.length >= 1"
+            class="skubox"
+            v-for="(item, index) in productDetails.skuList"
+            :key="item.skuId"
+          >
             <div
-              @click="skuBorderShow(index)"
+              @click="
+                skuBorderShow(
+                  index,
+                  item.skuId,
+                  item.discounts,
+                  item.originalPrice,
+                  item.skuName
+                )
+              "
               :class="index == skuIndex ? 'skuindex' : 'sku'"
             >
-              <p>12GB+512GB</p>
+              <p>{{ item.skuName }}</p>
             </div>
           </div>
         </div>
@@ -161,11 +174,35 @@ export default {
     return {
       dis: false, // 控制“加入购物车按钮是否可用”
       productID: "", // 商品id
-      productDetails: "", // 商品详细信息
-      productPicture: "", // 商品图片
-      skuIndex: 1,
+      // 商品详细信息
+      productDetails: {
+        productId: "",
+        productName: "",
+        categoryId: 11,
+        rootCategoryId: 2,
+        soldNum: 1211,
+        productStatus: 1,
+        content: "",
+        createTime: "",
+        updateTime: "",
+        id: null,
+        itemId: null,
+        url: null,
+        sort: null,
+        isMain: null,
+        createdTime: null,
+        updatedTime: null,
+        originalPrice: null,
+        discounts: null,
+        skuId: null,
+        skuName: null,
+        imgList: [],
+        skuList: [],
+      },
+      skuIndex: 0,
     };
   },
+
   // 通过路由获取商品id
   activated() {
     if (this.$route.query.productID != undefined) {
@@ -176,7 +213,6 @@ export default {
     // 监听商品id的变化，请求后端获取商品数据
     productID: function (val) {
       this.getDetails(val);
-      this.getDetailsPicture(val);
     },
   },
   methods: {
@@ -185,21 +221,25 @@ export default {
     // 获取商品详细信息
     getDetails(val) {
       this.$axios
-        .get("/api/product/getProductId/" + val)
-        .then((res) => {
-          this.productDetails = res.data.data[0];
-        })
-        .catch((err) => {
-          return Promise.reject(err);
-        });
-    },
-
-    // 获取商品图片
-    getDetailsPicture(val) {
-      this.$axios
         .get("/api/product/List/" + val)
         .then((res) => {
-          this.productPicture = res.data.data;
+          this.productDetails = res.data.data[0];
+
+          let skulength = this.productDetails.skuList.length;
+
+          this.productDetails.originalPrice =
+            res.data.data[0].skuList[0].originalPrice;
+          this.productDetails.discounts = res.data.data[0].skuList[0].discounts;
+
+          this.productDetails.productName +=
+            "\xa0" +
+            "\xa0" +
+            "\xa0" +
+            "\xa0" +
+            res.data.data[0].skuList[0].skuName;
+          this.productDetails.skuId = res.data.data[0].skuList[0].skuId;
+
+          this.productDetails.url = res.data.data[0].imgList[0].url;
         })
         .catch((err) => {
           return Promise.reject(err);
@@ -207,19 +247,19 @@ export default {
     },
 
     // 加入购物车
-    addShoppingCart() {
+    async addShoppingCart() {
       // 判断是否登录,没有登录则显示登录组件
       if (!this.$store.getters.getUser || !localStorage.getItem("token")) {
         this.$router.push("/login");
         return;
       }
-      this.$axios
+      await this.$axios
         .post("/api/shopping-cart/", {
           userId: this.$store.getters.getUser.userId,
           productId: this.productID,
           productPrice:
             this.productDetails.originalPrice * this.productDetails.discounts,
-          skuId: "1",
+          skuId: this.productDetails.skuId,
           cartNum: "1",
         })
         .then((res) => {
@@ -232,15 +272,19 @@ export default {
 
             case 201:
               // 该商品已经在购物车，数量+1
-              this.addShoppingCartNum(this.productID);
+              this.addShoppingCartNum({
+                productID: this.productID,
+                skuId: this.productDetails.skuId,
+              });
               this.$message.success(res.data.msg);
               break;
 
-            // case "203":
+            // case 203:
             //   // 商品数量达到限购数量
             //   this.dis = true;
             //   this.$message.error(res.data.msg);
             //   break;
+
             default:
               this.$message.error(res.data.msg);
           }
@@ -259,7 +303,8 @@ export default {
         .post("/api/user-collect/", {
           userId: this.$store.getters.getUser.userId,
           productId: this.productID,
-          categoryId: this.productPicture[0].categoryId,
+          categoryId: this.productDetails.categoryId,
+          skuId: this.productDetails.skuId
         })
         .then((res) => {
           if (res.data.code == 200) {
@@ -275,8 +320,19 @@ export default {
         });
     },
 
-    skuBorderShow(index) {
+    skuBorderShow(index, skuId, discounts, originalPrice, skuName) {
       this.skuIndex = index;
+      this.productDetails.skuId = skuId;
+      this.productDetails.originalPrice = originalPrice;
+      this.productDetails.discounts = discounts;
+
+      this.productDetails.productName =
+        this.productDetails.productName.split("\xa0")[0] +
+        "\xa0" +
+        "\xa0" +
+        "\xa0" +
+        "\xa0" +
+        skuName;
     },
   },
 };

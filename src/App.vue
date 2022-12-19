@@ -23,13 +23,13 @@
  * Copyright (c) 2022 by Linson 854700937@qq.com, All Rights Reserved. 
  -->
 
- <template>
+<template>
   <div>
     <el-container>
       <!-- 顶部导航栏 -->
-      <top v-if="!(path ==='/login')" ></top>
+      <top v-if="!(path === '/login')"></top>
       <!-- 顶栏容器 -->
-      <Header v-show="!(path =='/login')"></Header>
+      <Header v-show="!(path == '/login')"></Header>
       <!-- 主要区域容器 -->
       <el-main>
         <keep-alive exclude="pay,Goods">
@@ -39,7 +39,7 @@
       <!-- 主要区域容器END -->
       <!-- 底栏容器 -->
       <el-footer>
-        <Footer v-if="!(path ==='/login')"></Footer>
+        <Footer v-if="!(path === '/login')"></Footer>
       </el-footer>
       <!-- 底栏容器END -->
     </el-container>
@@ -51,31 +51,27 @@ import Header from "../src/components/Header.vue";
 import Footer from "./components/Footer.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     top,
     Header,
-    Footer
+    Footer,
   },
-  data(){
+  data() {
     return {
-      path: ''
-    }
+      path: "",
+    };
   },
   mounted() {
-          this.path = this.$route.path;
-        },
-        watch:{
-            $route(to,from){
-                this.path = to.path
-            }
-        }
-
-  
+    this.path = this.$route.path;
+  },
+  watch: {
+    $route(to, from) {
+      this.path = to.path;
+    },
+  },
 };
 </script>
 <style scoped>
 @import "@/assets/css/all.css";
 </style>
-
-
