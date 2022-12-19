@@ -38,11 +38,12 @@
           <img
             @mouseenter ="logoShow"
             v-if="logo"
-            class="logo-img"
+            class="logo-img animate__animated animate__bounce"
             src="../assets/imgs/pineapple-logo.png"
           />
           <img
             v-else="logo"
+            @click="logoShow"
             class="logo-img-go animate__animated animate__fadeInRight"
             src="../assets/imgs/gohome.png"
           />

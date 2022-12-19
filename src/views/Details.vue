@@ -23,13 +23,12 @@
  * Copyright (c) 2022 by Linson 854700937@qq.com, All Rights Reserved. 
  -->
 
-
 <template>
   <div id="details">
     <!-- 头部 -->
     <div class="page-header">
       <div class="title">
-        <p>{{productDetails.product_name}}</p>
+        <p>{{ productDetails.product_name }}</p>
         <div class="list">
           <ul>
             <li>
@@ -52,15 +51,15 @@
       <!-- 左侧商品轮播图 -->
 
       <div class="blockdetalis animate__animated animate__zoomIn">
-        <el-carousel  height="560px" v-if="productPicture.length>1">
+        <el-carousel height="560px" v-if="productPicture.length > 1">
           <el-carousel-item v-for="item in productPicture" :key="item.id">
-            <img style="height:560px;" :src="item.url" />
+            <img style="height: 560px" :src="item.url" />
           </el-carousel-item>
         </el-carousel>
 
-        <div v-if="productPicture.length==1">
+        <div v-if="productPicture.length == 1">
           <img
-            style="height:560px; width: 560px;"
+            style="height: 560px; width: 560px"
             :src="productPicture[0].url"
           />
         </div>
@@ -69,47 +68,84 @@
 
       <!-- 右侧内容区 -->
       <div class="content">
-        <h1 class="name">{{productDetails.productName}}</h1>
-        <p class="intro">{{productDetails.content}}</p>
-        <p class="store">菠萝自营</p>
+        <div>
+          <h1 class="name">{{ productDetails.productName }}</h1>
+          <p class="intro">{{ productDetails.content }}</p>
+          <p class="store">菠萝自营</p>
+        </div>
         <div class="price">
-          <span>{{(productDetails.originalPrice * productDetails.discounts).toFixed(2)}}元</span>
           <span
-            v-show="productDetails.originalPrice != productDetails.originalPrice * productDetails.discounts "
+            >{{
+              (productDetails.originalPrice * productDetails.discounts).toFixed(
+                2
+              )
+            }}元</span
+          >
+          <span
+            v-show="
+              productDetails.originalPrice !=
+              productDetails.originalPrice * productDetails.discounts
+            "
             class="del"
-          >{{(productDetails.originalPrice*1).toFixed(2) }}元</span>
+            >{{ (productDetails.originalPrice * 1).toFixed(2) }}元</span
+          >
         </div>
+
+        <div class="pro-sku animate__animated animate__zoomIn">
+          <h2>选择套餐</h2>
+          <div class="skubox" v-for="(item, index) in 2">
+            <div
+              @click="skuBorderShow(index)"
+              :class="index == skuIndex ? 'skuindex' : 'sku'"
+            >
+              <p>12GB+512GB</p>
+            </div>
+          </div>
+        </div>
+
         <div class="pro-list">
-          <span class="pro-name">{{productDetails.productName}}</span>
+          <span class="pro-name">{{ productDetails.productName }}</span>
           <span class="pro-price">
-            <span>{{(productDetails.originalPrice *productDetails.discounts).toFixed(2)}}元</span>
             <span
-              v-show="productDetails.originalPrice != productDetails.originalPrice*productDetails.discounts"
+              >{{
+                (
+                  productDetails.originalPrice * productDetails.discounts
+                ).toFixed(2)
+              }}元</span
+            >
+            <span
+              v-show="
+                productDetails.originalPrice !=
+                productDetails.originalPrice * productDetails.discounts
+              "
               class="pro-del"
-            >{{(productDetails.originalPrice*1).toFixed(2)}}元</span>
+              >{{ (productDetails.originalPrice * 1).toFixed(2) }}元</span
+            >
           </span>
-          <p class="price-sum">总计 : {{(productDetails.originalPrice *productDetails.discounts).toFixed(2)}}元</p>
+          <p class="price-sum">
+            总计 :
+            {{
+              (productDetails.originalPrice * productDetails.discounts).toFixed(
+                2
+              )
+            }}元
+          </p>
         </div>
+
         <!-- 内容区底部按钮 -->
         <div class="button">
-          <el-button class="shop-cart" :disabled="dis" @click="addShoppingCart">加入购物车</el-button>
+          <el-button class="shop-cart" :disabled="dis" @click="addShoppingCart"
+            >加入购物车</el-button
+          >
           <el-button class="like" @click="addCollect">喜欢</el-button>
         </div>
         <!-- 内容区底部按钮END -->
         <div class="pro-policy">
           <ul>
-            <li>
-              <i class="el-icon-circle-check"></i> 菠萝自营
-            </li>
-            <li>
-              <i class="el-icon-circle-check"></i> 菠萝发货
-            </li>
-            <li>
-              <i class="el-icon-circle-check"></i> 7天无理由退货
-            </li>
-            <li>
-              <i class="el-icon-circle-check"></i> 7天价格保护
-            </li>
+            <li><i class="el-icon-circle-check"></i> 菠萝自营</li>
+            <li><i class="el-icon-circle-check"></i> 菠萝发货</li>
+            <li><i class="el-icon-circle-check"></i> 7天无理由退货</li>
+            <li><i class="el-icon-circle-check"></i> 7天价格保护</li>
           </ul>
         </div>
       </div>
@@ -126,7 +162,8 @@ export default {
       dis: false, // 控制“加入购物车按钮是否可用”
       productID: "", // 商品id
       productDetails: "", // 商品详细信息
-      productPicture: "" ,// 商品图片
+      productPicture: "", // 商品图片
+      skuIndex: 1,
     };
   },
   // 通过路由获取商品id
@@ -134,14 +171,13 @@ export default {
     if (this.$route.query.productID != undefined) {
       this.productID = this.$route.query.productID;
     }
-
   },
   watch: {
     // 监听商品id的变化，请求后端获取商品数据
-    productID: function(val) {
+    productID: function (val) {
       this.getDetails(val);
       this.getDetailsPicture(val);
-    }
+    },
   },
   methods: {
     ...mapActions(["unshiftShoppingCart", "addShoppingCartNum"]),
@@ -149,25 +185,23 @@ export default {
     // 获取商品详细信息
     getDetails(val) {
       this.$axios
-        .get("/api/product/getProductId/"+ val
-      )
-        .then(res => {
+        .get("/api/product/getProductId/" + val)
+        .then((res) => {
           this.productDetails = res.data.data[0];
         })
-        .catch(err => {
+        .catch((err) => {
           return Promise.reject(err);
         });
     },
 
-
     // 获取商品图片
     getDetailsPicture(val) {
       this.$axios
-        .get("/api/product/List/"+val)
-        .then(res => {
+        .get("/api/product/List/" + val)
+        .then((res) => {
           this.productPicture = res.data.data;
         })
-        .catch(err => {
+        .catch((err) => {
           return Promise.reject(err);
         });
     },
@@ -175,7 +209,7 @@ export default {
     // 加入购物车
     addShoppingCart() {
       // 判断是否登录,没有登录则显示登录组件
-      if (!this.$store.getters.getUser||!localStorage.getItem("token")) {
+      if (!this.$store.getters.getUser || !localStorage.getItem("token")) {
         this.$router.push("/login");
         return;
       }
@@ -183,20 +217,19 @@ export default {
         .post("/api/shopping-cart/", {
           userId: this.$store.getters.getUser.userId,
           productId: this.productID,
-          productPrice:this.productDetails.originalPrice * this.productDetails.discounts,
-          skuId:"1",
-          cartNum:"1"
+          productPrice:
+            this.productDetails.originalPrice * this.productDetails.discounts,
+          skuId: "1",
+          cartNum: "1",
         })
-        .then(res => {
-
+        .then((res) => {
           switch (res.data.code) {
-
             case 200:
               // 新加入购物车成功
               this.unshiftShoppingCart(res.data.data.data);
               this.$message.success(res.data.msg);
               break;
-              
+
             case 201:
               // 该商品已经在购物车，数量+1
               this.addShoppingCartNum(this.productID);
@@ -209,18 +242,16 @@ export default {
             //   this.$message.error(res.data.msg);
             //   break;
             default:
-            this.$message.error(res.data.msg);
-             
+              this.$message.error(res.data.msg);
           }
-
         })
-        .catch(err => {
+        .catch((err) => {
           return Promise.reject(err);
         });
     },
     addCollect() {
       // 判断是否登录,没有登录则显示登录组件
-      if (!this.$store.getters.getUser||!localStorage.getItem("token")) {
+      if (!this.$store.getters.getUser || !localStorage.getItem("token")) {
         this.$router.push("/login");
         return;
       }
@@ -228,8 +259,7 @@ export default {
         .post("/api/user-collect/", {
           userId: this.$store.getters.getUser.userId,
           productId: this.productID,
-          categoryId:this.productPicture[0].categoryId
-          
+          categoryId: this.productPicture[0].categoryId,
         })
         .then((res) => {
           if (res.data.code == 200) {
@@ -240,11 +270,15 @@ export default {
             this.$message.error(res.data.msg);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           return Promise.reject(err);
         });
-    }
-  }
+    },
+
+    skuBorderShow(index) {
+      this.skuIndex = index;
+    },
+  },
 };
 </script>
 <style>
@@ -339,7 +373,6 @@ export default {
 #details .main .content .pro-list {
   background: #f9f9fa;
   padding: 30px 60px;
-  margin: 50px 0 50px;
 }
 #details .main .content .pro-list span {
   line-height: 30px;
@@ -390,5 +423,48 @@ export default {
   margin-right: 20px;
   color: #b0b0b0;
 }
+
+.pro-sku {
+  margin-top: 20px;
+  width: 640px;
+  height: 230px;
+}
+.pro-sku h2 {
+  color: #333;
+}
+.skubox {
+  margin-top: 25px;
+}
+.pro-sku .sku {
+  width: 189px;
+  height: 60px;
+  float: left;
+  text-align: center;
+  margin: 0 10px 10px 0;
+  border: 1px solid #757575;
+}
+
+.pro-sku .skuindex {
+  width: 189px;
+  height: 60px;
+  /* display: inline; */
+  float: left;
+  text-align: center;
+  margin: 0 10px 10px 0;
+  border: 1px solid #ff6700;
+}
+
+.pro-sku .sku p {
+  padding-top: 20px;
+}
+
+.pro-sku .skuindex p {
+  padding-top: 20px;
+}
+.pro-list {
+  margin-top: 50px;
+  border-top: 1px solid #e0e0e0;
+}
+
 /* 主要内容CSS END */
 </style>

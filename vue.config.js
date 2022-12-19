@@ -39,8 +39,8 @@ module.exports = {
     port: 80,
     proxy: {
       '/api': {
-        // target: 'http://localhost:8081/', // 本地后端地址
-        target: 'http://121.4.154.210:8081/', // 线上后端地址
+        target: 'http://localhost:8081/', // 本地后端地址
+        // target: 'http://121.4.154.210:8081/', // 线上后端地址
         changeOrigin: true, //允许跨域
         pathRewrite: {
           '^/api': ''
