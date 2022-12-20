@@ -316,7 +316,6 @@ export default {
         return this.$message.error(res.msg);
       } else {
         this.productDisplayList = res.data;
-        console.log(this.productDisplayList,"你XX");
       }
     },
     //获取分类推荐

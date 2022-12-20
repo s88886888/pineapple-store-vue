@@ -196,8 +196,10 @@ export default {
             });
             // 打开新页面
             this.checkPay = true;
+
             //websocket 长连接通信
             this.initWebSocket();
+
             window.open(routerData.href, "_ blank");
           } else {
             this.$message.error(res.data.msg);
@@ -269,8 +271,7 @@ export default {
     ///websocket 初始化
     initWebSocket() {
       if (typeof WebSocket === "undefined") {
-        this.$message.error("您的浏览器不支持WebSocket，无法获取数据");
-        return false;
+       return this.$message.error("您的浏览器不支持WebSocket,无法获取数据");
       } else {
         let Url = "ws://121.4.154.210:8081/pay/" + this.payOrderId;
         // 实例化socket

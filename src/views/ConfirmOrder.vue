@@ -226,7 +226,7 @@ export default {
   data() {
     return {
       // 虚拟数据
-      confirmAddress: 1, // 选择的地址id
+      confirmAddress: 0, // 选择的地址id
       dialogVisible: false, //新增地址弹出层
       selectedOptions: [], //用户选择后的三级城市数据
       newaddress: {}, //新增地址list

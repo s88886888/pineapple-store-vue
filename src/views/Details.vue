@@ -237,8 +237,9 @@ export default {
             "\xa0" +
             "\xa0" +
             res.data.data[0].skuList[0].skuName;
+            
           this.productDetails.skuId = res.data.data[0].skuList[0].skuId;
-
+  
           this.productDetails.url = res.data.data[0].imgList[0].url;
         })
         .catch((err) => {
@@ -266,7 +267,7 @@ export default {
           switch (res.data.code) {
             case 200:
               // 新加入购物车成功
-              this.unshiftShoppingCart(res.data.data.data);
+              this.unshiftShoppingCart(res.data.data);
               this.$message.success(res.data.msg);
               break;
 
