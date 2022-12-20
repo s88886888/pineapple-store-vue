@@ -29,12 +29,22 @@
       <div class="content" v-for="(item, index) in orders" :key="index">
         <ul>
           <!-- 我的订单表头 -->
-          <li :class="item.status === '1' ? 'order-info nopay' : (item.status === '6'?'order-info closepay':'order-info') ">
+          <li
+            :class="
+              item.status === '1'
+                ? 'order-info nopay'
+                : item.status === '6'
+                ? 'order-info closepay'
+                : 'order-info'
+            "
+          >
             <div class="order-id">订单编号: {{ item.orderId }}</div>
             <div class="order-time">
               订单时间: {{ item.createTime | dateFormat }}
             </div>
-            <div class="order-time" v-if="item.status === '1'"><p>未支付</p></div>
+            <div class="order-time" v-if="item.status === '1'">
+              <p>未支付</p>
+            </div>
           </li>
           <li class="header">
             <div class="pro-img"></div>
@@ -86,13 +96,20 @@
             </span>
           </div>
           <div class="order-bar-right">
-
             <span>
-              <el-button  v-if="item.status === '1'" @click="alipay(item.orderId)">支付</el-button>
-              <el-button v-if="item.status === '1'" style="padding-right: 20px">取消</el-button>
+              <el-button
+                v-if="item.status === '1'"
+                @click="payOrder(item.orderId)"
+                >支付</el-button
+              >
+              <el-button v-if="item.status === '1'" style="padding-right: 20px"
+                >取消</el-button
+              >
 
               <span class="total-price-title">合计：</span>
-              <span class="total-price">{{ (total[index].totalPrice).toFixed(2) }}元</span>
+              <span class="total-price"
+                >{{ total[index].totalPrice.toFixed(2) }}元</span
+              >
             </span>
           </div>
           <!-- 订单列表END -->
@@ -115,7 +132,7 @@
 <script>
 import qs from "qs";
 export default {
-  name:'Order',
+  name: "Order",
   data() {
     return {
       orders: [], // 订单列表
@@ -178,6 +195,18 @@ export default {
             this.$message.error(res.data.msg);
           }
         });
+    },
+
+    payOrder(val) {
+      if (val == "") {
+        return this.$message.error("未知订单");
+      }
+
+      this.$router.push({
+        path: "/pay",
+        query: { OrderId: val },
+      });
+
     },
   },
 };

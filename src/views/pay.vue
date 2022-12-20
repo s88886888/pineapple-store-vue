@@ -45,44 +45,61 @@
                 >元
               </p>
               <div class="order-infos-box">
-                <p>订单详情<em class="icon-down up"></em></p>
+                <i v-if="payShow" @click="payShowtime" class="el-icon-arrow-up"
+                  >隐藏详情</i
+                >
+                <i
+                  v-else="payShow"
+                  @click="payShowtime"
+                  class="el-icon-arrow-down"
+                  >订单详情</i
+                >
               </div>
             </div>
           </div>
         </div>
 
-        <div class="item-detail">
-          <div class="item">
-            <div class="detail-title">订单号码：</div>
-            <div class="detail-info theme-color">{{ payOrderId }}</div>
-          </div>
-          <div class="item">
-            <div class="detail-title">收货信息：</div>
-            <div class="detail-info">{{ address }}</div>
-          </div>
-          <div class="item good">
-            <div class="detail-title">商品名称：</div>
-            <div class="detail-info">
-              <ul v-for="(item, index) in productList" :key="index">
-                <li>
-                  <div class="goodstitle">
-                    <img :src="item.productImg" alt="" />{{ item.productName }}
-                  </div>
+        <transition
+          enter-active-class="animate__animated animate__fadeInDown animate__fast"
+          leave-active-class="animate__animated animate__fadeOutUp animate__fast"
+        >
+          <div v-if="payShow" class="item-detail">
+            <div class="item">
+              <div class="detail-title">订单号码：</div>
+              <div class="detail-info theme-color">{{ payOrderId }}</div>
+            </div>
+            <div class="item">
+              <div class="detail-title">收货信息：</div>
+              <div class="detail-info">{{ address }}</div>
+            </div>
+            <div class="item good">
+              <div class="detail-title">商品名称：</div>
+              <div class="detail-info">
+                <ul v-for="(item, index) in productList" :key="index">
+                  <li>
+                    <div class="goodstitle">
+                      <img :src="item.productImg" alt="" />
+                      {{ item.productName + "\xa0" }}
+                      <span>{{ "\xa0" + item.skuName }}</span>
+                    </div>
 
-                  <div class="goodsInfo">
-                    <span>{{ item.productPrice }}</span>
-                    *
-                    <span> {{ item.buyCounts }}</span>
-                  </div>
-                </li>
-              </ul>
+                    <div class="goodsInfo">
+                      <span>{{ item.productPrice }}</span>
+                      *
+                      <span> {{ item.buyCounts }}</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="item">
+              <div class="detail-title">发票信息：</div>
+              <div class="detail-info">
+                <span class="fp">电子发票 </span> <span class="gr">个人</span>
+              </div>
             </div>
           </div>
-          <div class="item">
-            <div class="detail-title">发票信息：</div>
-            <div class="detail-info">电子发票 个人</div>
-          </div>
-        </div>
+        </transition>
       </div>
 
       <div class="item-pay">
@@ -138,6 +155,8 @@ export default {
 
       //  websocket 长连接服务
       socket: "",
+
+      payShow: true,
     };
   },
   created() {
@@ -268,10 +287,14 @@ export default {
       });
     },
 
+    payShowtime() {
+      this.payShow = !this.payShow;
+    },
+
     ///websocket 初始化
     initWebSocket() {
       if (typeof WebSocket === "undefined") {
-       return this.$message.error("您的浏览器不支持WebSocket,无法获取数据");
+        return this.$message.error("您的浏览器不支持WebSocket,无法获取数据");
       } else {
         let Url = "ws://121.4.154.210:8081/pay/" + this.payOrderId;
         // 实例化socket
@@ -431,6 +454,9 @@ export default {
   width: 400px;
   display: inline-block;
 }
+.goodstitle span {
+  color: #ff6700;
+}
 .goodsInfo {
   width: 100px;
   margin-left: 50px;
@@ -480,5 +506,13 @@ export default {
   display: inline-block;
   border: 1px solid green;
   margin-left: 20px;
+}
+
+.detail-info .fp {
+  color: #ff6700;
+}
+.detail-info .gr {
+  margin-left: 10px;
+  color: #ff6700;
 }
 </style>

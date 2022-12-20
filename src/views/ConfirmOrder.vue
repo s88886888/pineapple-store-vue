@@ -123,7 +123,7 @@
           <ul>
             <li v-for="item in getCheckGoods" :key="item.id">
               <img :src="item.url" />
-              <span class="pro-name">{{ item.productName }}</span>
+              <span class="pro-name">{{ item.productName+'\xa0'+'\xa0'+item.skuName }}</span>
               <span class="pro-price"
                 >{{ item.productPrice }}元 x {{ item.cartNum }}</span
               >

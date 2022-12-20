@@ -1,5 +1,5 @@
 <template>
-  <div id="myList" class="myList" >
+  <div id="myList" class="myList">
     <ul>
       <li v-for="(item, index) in list" :key="index">
         <el-popover placement="top">
@@ -8,7 +8,7 @@
             <el-button
               type="primary"
               size="mini"
-              @click="deleteCollect(item.productId)"
+              @click="deleteCollect(item.productId, item.skuId)"
               >确定</el-button
             >
           </div>
@@ -25,18 +25,32 @@
           <!-- <img :src="item.url == null ? item.imgList[0].url : item.url" alt /> -->
           <h2>{{ item.productName }}</h2>
           <h3>{{ item.content }}</h3>
+          <h3 style="color: coral" v-show="isDelete">{{ item.skuName }}</h3>
 
           <p>
-
-            <span >{{ isNaN(item.originalPrice*item.discounts) ? (item.skuList[0].originalPrice * item.skuList[0].discounts).toFixed(2):(item.originalPrice*item.discounts).toFixed(2) }}元</span>
+            <span
+              >{{
+                isNaN(item.originalPrice * item.discounts)
+                  ? (
+                      item.skuList[0].originalPrice * item.skuList[0].discounts
+                    ).toFixed(2)
+                  : (item.originalPrice * item.discounts).toFixed(2)
+              }}元</span
+            >
 
             <!-- <span >{{ (sku.originalPrice * sku.discounts).toFixed(2) }}元</span> -->
 
-            <span v-show=" item.originalPrice != item.originalPrice * item.discounts " class="del">
-              {{isNaN(item.originalPrice*item.discounts) ? (item.skuList[0].originalPrice * 1).toFixed(2):(item.originalPrice * 1).toFixed(2)}}元</span>      
-              
+            <span
+              v-show="item.originalPrice != item.originalPrice * item.discounts"
+              class="del"
+            >
+              {{
+                isNaN(item.originalPrice * item.discounts)
+                  ? (item.skuList[0].originalPrice * 1).toFixed(2)
+                  : (item.originalPrice * 1).toFixed(2)
+              }}元</span
+            >
           </p>
-          
         </router-link>
       </li>
 
@@ -76,22 +90,16 @@ export default {
     },
   },
   methods: {
-    deleteCollect(productId) {
+    deleteCollect(productId, skuId) {
       this.$axios
-        .delete(
-          "/api/user-collect/" +
-            this.$store.getters.getUser.userId +
-            "/" +
-            productId
-        )
+        .delete("/api/user-collect/"+productId+"/" +skuId+"/"+ this.$store.getters.getUser.userId+"/")
         .then((res) => {
           switch (res.data.code) {
             case 200:
-              // 删除成功
-              // 删除删除列表中的该商品信息
+              // 删除成功 删除列表中的该商品信息
               for (let i = 0; i < this.list.length; i++) {
                 const temp = this.list[i];
-                if (temp.productId == productId) {
+                if (temp.productId == productId&&temp.skuId==skuId) {
                   this.list.splice(i, 1);
                 }
               }

@@ -239,7 +239,7 @@ export default {
             res.data.data[0].skuList[0].skuName;
             
           this.productDetails.skuId = res.data.data[0].skuList[0].skuId;
-  
+          this.productDetails.skuName =res.data.data[0].skuList[0].skuName;
           this.productDetails.url = res.data.data[0].imgList[0].url;
         })
         .catch((err) => {
@@ -305,7 +305,8 @@ export default {
           userId: this.$store.getters.getUser.userId,
           productId: this.productID,
           categoryId: this.productDetails.categoryId,
-          skuId: this.productDetails.skuId
+          skuId: this.productDetails.skuId,
+          skuName:this.productDetails.skuName
         })
         .then((res) => {
           if (res.data.code == 200) {
@@ -326,7 +327,7 @@ export default {
       this.productDetails.skuId = skuId;
       this.productDetails.originalPrice = originalPrice;
       this.productDetails.discounts = discounts;
-
+      this.productDetails.skuName = skuName;
       this.productDetails.productName =
         this.productDetails.productName.split("\xa0")[0] +
         "\xa0" +

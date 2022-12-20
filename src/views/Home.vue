@@ -26,7 +26,7 @@
   <div class="home" id="home" name="home">
     <div class="block" @mouseleave="clover">
       <!-- 左边导航栏 -->
-      <div id="leftcategoryList" class="animate__animated animate__backInLeft">
+      <div id="leftcategoryList" class="animate__animated animate__backInLeft animate__fast">
         <ul
           v-for="(item, index) in leftcategoryDataList"
           :key="item.categoryId"
