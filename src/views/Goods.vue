@@ -16,8 +16,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-13 03:40:15
- * @FilePath: \pineapplestoer_webui\src\views\Goods.vue
+ * @LastEditTime: 2023-01-19 23:02:47
+ * @FilePath: \pineapple-store-vue\src\views\Goods.vue
  * @Description: 全部商品页面组件(包括全部商品,商品分类,商品搜索)
  * 
  * Copyright (c) 2022 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -271,7 +271,7 @@ export default {
     // 通过搜索条件向后端请求商品数据
     getProductBySearch() {
       this.$axios
-        .get("/api/product/getProductName" + this.search, {
+        .get("/api/product/getProductName/" + this.search, {
           params: {
             current: this.currentPage,
             size: this.pageSize,
