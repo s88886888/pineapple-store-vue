@@ -16,8 +16,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:29:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-08 02:43:10
- * @FilePath: \pineapplestoer_webui\src\views\Login.vue
+ * @LastEditTime: 2023-01-27 04:34:58
+ * @FilePath: \pineapple-store-vue\src\views\Login.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -327,8 +327,8 @@ export default {
 
       //登录
       loginList: {
-        userName: "",
-        passWord: "",
+        userName: "陈冠希",
+        passWord: "990213",
         type: [],
         loginToken: "",
       },
