@@ -16,8 +16,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:29:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-14 02:55:25
- * @FilePath: \pineapplestoer_webui\src\views\Home.vue
+ * @LastEditTime: 2023-01-27 22:41:16
+ * @FilePath: \pineapple-store-vue\src\views\Home.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -94,7 +94,7 @@
           <div class="box-bd">
             <div class="promo-list">
               <router-link to>
-                <img src="https://img1.imgtp.com/2022/12/03/3IRRU9zi.jpg" />
+                <img src="https://s2.loli.net/2023/01/27/NWFStPCuJH6p2gE.jpg" />
               </router-link>
             </div>
             <div class="list animate__animated animate__fadeInDown">
@@ -121,13 +121,13 @@
               <ul>
                 <li>
                   <img
-                    src="https://img1.imgtp.com/2022/12/03/204XQpy5.jpg"
+                    src="https://s2.loli.net/2023/01/27/6OuzIKBMTNDjwed.webp"
                     alt
                   />
                 </li>
                 <li>
                   <img
-                    src="https://img1.imgtp.com/2022/12/03/urGCvWJn.jpg"
+                    src="https://s2.loli.net/2023/01/27/6LYxvjHhWSb4kXZ.webp"
                     alt
                   />
                 </li>

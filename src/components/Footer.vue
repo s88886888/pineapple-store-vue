@@ -16,8 +16,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:28:01
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-11-20 03:11:00
- * @FilePath: \pineapplestoer_webui\src\components\Footer.vue
+ * @LastEditTime: 2023-01-27 22:48:21
+ * @FilePath: \pineapple-store-vue\src\components\Footer.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -47,8 +47,9 @@
               <span>|</span>
               <router-link to="/goods">全部商品</router-link>
               <span>|</span>
+              <router-link to="/goods">仅测试禁止商业用途</router-link>
             </p>
-            <p class="coty">商城版权所有 &copy; 2012-2021</p>
+            <p class="coty">菠萝商城版权所有Linson &copy; 2022-2023</p>
           </div>
         </div>
 </template>

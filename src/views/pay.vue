@@ -16,8 +16,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-12-11 09:32:48
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-11 11:45:12
- * @FilePath: \pineapplestoer_webui\src\views\pay.vue
+ * @LastEditTime: 2023-01-27 21:36:30
+ * @FilePath: \pineapple-store-vue\src\views\pay.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -121,6 +121,10 @@
       :before-close="handleClose"
     >
       <span>请问您是否已经完成支付</span>
+      <ul>
+        <li>账号：kqudyw6908@sandbox.com</li>
+        <li>登录和支付密码：111111</li>
+      </ul>
       <!-- <img></img> -->
       <span slot="footer" class="dialog-footer">
         <el-button @click="alipay">继续前往支付</el-button>
