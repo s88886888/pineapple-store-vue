@@ -2,8 +2,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-10 18:44:47
- * @FilePath: \pineapplestoer_webui\src\views\Order.vue
+ * @LastEditTime: 2023-02-27 16:40:26
+ * @FilePath: \pineapple-store-vue\src\views\Order.vue
  * @Description: 我的订单页面组件
  * 
  * Copyright (c) 2022 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -13,13 +13,53 @@
     <!-- 我的订单头部 -->
     <div class="order-header">
       <div class="order-header-content">
-        <p>
-          <i
-            class="el-icon-s-order"
-            style="font-size: 30px; color: #ff6700"
-          ></i>
+        <p
+          @click="getOrder"
+          :style="
+            isColor == 0
+              ? 'font-size: 30px;  color: #ff6700;  margin-left: 30px'
+              : 'font-size: 30px; margin-left: 30px'
+          "
+        >
+          <i class="el-icon-s-order"></i>
           我的订单
         </p>
+
+        <div>
+          <p
+            class="order-status"
+            :style="
+              isColor == 1
+                ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
+                : 'font-size: 20px; margin-left: 30px'
+            "
+            @click="getOrderNoPay"
+          >
+            待支付
+          </p>
+
+          <p
+            class="order-nostatus"
+            :style="
+              isColor == 2
+                ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
+                : 'font-size: 20px; margin-left: 30px'
+            "
+          >
+            待收货
+          </p>
+
+          <p
+            class="order-status"
+            :style="
+              isColor == 3
+                ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
+                : 'font-size: 20px; margin-left: 30px'
+            "
+          >
+            订单回收站
+          </p>
+        </div>
       </div>
     </div>
     <!-- 我的订单头部END -->
@@ -137,22 +177,12 @@ export default {
     return {
       orders: [], // 订单列表
       total: [], // 每个订单的商品数量及总价列表
+      isColor: 0,
     };
   },
   activated() {
     // 获取订单数据
-    this.$axios
-      .get("/api/orders/getOrder/" + this.$store.getters.getUser.userId)
-      .then((res) => {
-        if (res.data.code == 200) {
-          this.orders = res.data.data;
-        } else {
-          this.$message.error(res.data.msg);
-        }
-      })
-      .catch((err) => {
-        return Promise.reject(err);
-      });
+    this.getOrder();
   },
   watch: {
     // 通过订单信息，计算出每个订单的商品数量及总价
@@ -175,6 +205,21 @@ export default {
   },
 
   methods: {
+    getOrder() {
+      this.isColor = 0;
+      this.$axios
+        .get("/api/orders/getOrder/" + this.$store.getters.getUser.userId)
+        .then((res) => {
+          if (res.data.code == 200) {
+            this.orders = res.data.data;
+          } else {
+            this.$message.error(res.data.msg);
+          }
+        })
+        .catch((err) => {
+          return Promise.reject(err);
+        });
+    },
     alipay(val) {
       if (val == "") {
         return this.$message.error("未知订单");
@@ -206,7 +251,20 @@ export default {
         path: "/pay",
         query: { OrderId: val },
       });
+    },
 
+    getOrderNoPay() {
+      this.isColor = 1;
+      let query = {
+        Id: this.$store.getters.getUser.userId,
+        status: "1",
+      };
+
+      this.$axios
+        .get("/api/orders/getUserIdbyStatus", { params: query })
+        .then((res) => {
+          this.orders = res.data.data;
+        });
     },
   },
 };
@@ -275,6 +333,10 @@ export default {
 
 .closepay {
   background-color: black;
+}
+
+.order-status {
+  color: #ff6700;
 }
 
 /* 我的订单表头CSS END */
