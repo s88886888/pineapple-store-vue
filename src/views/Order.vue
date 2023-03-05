@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-02-27 16:40:26
+ * @LastEditTime: 2023-03-05 18:10:23
  * @FilePath: \pineapple-store-vue\src\views\Order.vue
  * @Description: 我的订单页面组件
  * 
@@ -13,50 +13,37 @@
     <!-- 我的订单头部 -->
     <div class="order-header">
       <div class="order-header-content">
-        <p
-          @click="getOrder"
-          :style="
-            isColor == 0
-              ? 'font-size: 30px;  color: #ff6700;  margin-left: 30px'
-              : 'font-size: 30px; margin-left: 30px'
-          "
-        >
+        <p @click="getOrder" :style="
+          isColor == 0
+            ? 'font-size: 30px;  color: #ff6700;  margin-left: 30px'
+            : 'font-size: 30px; margin-left: 30px'
+        ">
           <i class="el-icon-s-order"></i>
           我的订单
         </p>
 
         <div>
-          <p
-            class="order-status"
-            :style="
-              isColor == 1
-                ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
-                : 'font-size: 20px; margin-left: 30px'
-            "
-            @click="getOrderNoPay"
-          >
+          <p class="order-status" :style="
+            isColor == 1
+              ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
+              : 'font-size: 20px; margin-left: 30px'
+          " @click="getOrderNoPay">
             待支付
           </p>
 
-          <p
-            class="order-nostatus"
-            :style="
-              isColor == 2
-                ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
-                : 'font-size: 20px; margin-left: 30px'
-            "
-          >
+          <p class="order-nostatus" :style="
+            isColor == 2
+              ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
+              : 'font-size: 20px; margin-left: 30px'
+          " @click="getseedOrder">
             待收货
           </p>
 
-          <p
-            class="order-status"
-            :style="
-              isColor == 3
-                ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
-                : 'font-size: 20px; margin-left: 30px'
-            "
-          >
+          <p class="order-status" :style="
+            isColor == 3
+              ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
+              : 'font-size: 20px; margin-left: 30px'
+          " @click="getOffOrder">
             订单回收站
           </p>
         </div>
@@ -69,15 +56,13 @@
       <div class="content" v-for="(item, index) in orders" :key="index">
         <ul>
           <!-- 我的订单表头 -->
-          <li
-            :class="
-              item.status === '1'
-                ? 'order-info nopay'
-                : item.status === '6'
+          <li :class="
+            item.status === '1'
+              ? 'order-info nopay'
+              : item.status === '6'
                 ? 'order-info closepay'
                 : 'order-info'
-            "
-          >
+          ">
             <div class="order-id">订单编号: {{ item.orderId }}</div>
             <div class="order-time">
               订单时间: {{ item.createTime | dateFormat }}
@@ -96,29 +81,20 @@
           <!-- 我的订单表头END -->
 
           <!-- 订单列表 -->
-          <li
-            class="product-list"
-            v-for="(product, i) in item.productList"
-            :key="i"
-          >
+          <li class="product-list" v-for="(product, i) in item.productList" :key="i">
             <div class="pro-img">
-              <router-link
-                :to="{
-                  path: '/goods/details',
-                  query: { productID: product.productId },
-                }"
-              >
+              <router-link :to="{
+                path: '/goods/details',
+                query: { productID: product.productId },
+              }">
                 <img :src="product.productImg" />
               </router-link>
             </div>
             <div class="pro-name">
-              <router-link
-                :to="{
-                  path: '/goods/details',
-                  query: { productID: product.productId },
-                }"
-                >{{ product.productName }}</router-link
-              >
+              <router-link :to="{
+                path: '/goods/details',
+                query: { productID: product.productId },
+              }">{{ product.productName }}</router-link>
             </div>
             <div class="pro-price">{{ product.productPrice }}元</div>
             <div class="pro-num">{{ product.buyCounts }}</div>
@@ -137,19 +113,11 @@
           </div>
           <div class="order-bar-right">
             <span>
-              <el-button
-                v-if="item.status === '1'"
-                @click="payOrder(item.orderId)"
-                >支付</el-button
-              >
-              <el-button v-if="item.status === '1'" style="padding-right: 20px"
-                >取消</el-button
-              >
+              <el-button v-if="item.status === '1'" @click="payOrder(item.orderId)">支付</el-button>
+              <el-button v-if="item.status === '1'" style="padding-right: 20px">取消</el-button>
 
               <span class="total-price-title">合计：</span>
-              <span class="total-price"
-                >{{ total[index].totalPrice.toFixed(2) }}元</span
-              >
+              <span class="total-price">{{ total[index].totalPrice.toFixed(2) }}元</span>
             </span>
           </div>
           <!-- 订单列表END -->
@@ -255,17 +223,43 @@ export default {
 
     getOrderNoPay() {
       this.isColor = 1;
-      let query = {
-        Id: this.$store.getters.getUser.userId,
-        status: "1",
-      };
-
       this.$axios
-        .get("/api/orders/getUserIdbyStatus", { params: query })
+        .get("/api/orders/getUserIdbyStatus", {
+          params: {
+            Id: this.$store.getters.getUser.userId,
+            status: "1",
+          }
+        })
         .then((res) => {
           this.orders = res.data.data;
         });
     },
+    getseedOrder() {
+      this.isColor = 2;
+      this.$axios
+        .get("/api/orders/getUserIdbyStatus", {
+          params: {
+            Id: this.$store.getters.getUser.userId,
+            status: "3",
+          }
+        })
+        .then((res) => {
+          this.orders = res.data.data;
+        });
+    },
+    getOffOrder() {
+      this.isColor = 3;
+      this.$axios
+        .get("/api/orders/getUserIdbyStatus", {
+          params: {
+            Id: this.$store.getters.getUser.userId,
+            status: "6",
+          }
+        })
+        .then((res) => {
+          this.orders = res.data.data;
+        });
+    }
   },
 };
 </script>
@@ -274,6 +268,7 @@ export default {
   background-color: #f5f5f5;
   padding-bottom: 20px;
 }
+
 /* 我的订单头部CSS */
 .order .order-header {
   height: 64px;
@@ -281,10 +276,12 @@ export default {
   background-color: #fff;
   margin-bottom: 20px;
 }
+
 .order .order-header .order-header-content {
   width: 1225px;
   margin: 0 auto;
 }
+
 .order .order-header p {
   font-size: 28px;
   line-height: 58px;
@@ -292,6 +289,7 @@ export default {
   font-weight: normal;
   color: #424242;
 }
+
 /* 我的订单头部CSS END */
 .order .content {
   width: 1225px;
@@ -305,6 +303,7 @@ export default {
   color: #424242;
   line-height: 85px;
 }
+
 /* 我的订单表头CSS */
 .order .content ul .order-info {
   height: 60px;
@@ -313,10 +312,12 @@ export default {
   color: #424242;
   border-bottom: 1px solid #ff6700;
 }
+
 .order .content ul .order-info .order-id {
   float: left;
   color: #ff6700;
 }
+
 .order .content ul .order-info .order-time {
   float: right;
 }
@@ -348,43 +349,52 @@ export default {
   padding: 15px 26px 15px 0;
   border-top: 1px solid #e0e0e0;
 }
+
 .order .content ul .pro-img {
   float: left;
   height: 85px;
   width: 120px;
   padding-left: 80px;
 }
+
 .order .content ul .pro-img img {
   height: 80px;
   width: 80px;
 }
+
 .order .content ul .pro-name {
   float: left;
   width: 380px;
 }
+
 .order .content ul .pro-name a {
   color: #424242;
 }
+
 .order .content ul .pro-name a:hover {
   color: #ff6700;
 }
+
 .order .content ul .pro-price {
   float: left;
   width: 160px;
   padding-right: 18px;
   text-align: center;
 }
+
 .order .content ul .pro-num {
   float: left;
   width: 190px;
   text-align: center;
 }
+
 .order .content ul .pro-total {
   float: left;
   width: 160px;
   padding-right: 81px;
   text-align: right;
 }
+
 .order .content ul .pro-total-in {
   color: #ff6700;
 }
@@ -397,26 +407,33 @@ export default {
   line-height: 50px;
   background-color: #fff;
 }
+
 .order .order-bar .order-bar-left {
   float: left;
 }
+
 .order .order-bar .order-bar-left .order-total {
   color: #757575;
 }
+
 .order .order-bar .order-bar-left .order-total-num {
   color: #ff6700;
 }
+
 .order .order-bar .order-bar-right {
   float: right;
 }
+
 .order .order-bar .order-bar-right .total-price-title {
   color: #ff6700;
   font-size: 14px;
 }
+
 .order .order-bar .order-bar-right .total-price {
   color: #ff6700;
   font-size: 30px;
 }
+
 /* 订单列表CSS END */
 
 /* 订单为空的时候显示的内容CSS */
@@ -424,6 +441,7 @@ export default {
   width: 1225px;
   margin: 0 auto;
 }
+
 .order .order-empty .empty {
   height: 300px;
   padding: 0 0 130px 558px;
@@ -432,13 +450,16 @@ export default {
   color: #b0b0b0;
   overflow: hidden;
 }
+
 .order .order-empty .empty h2 {
   margin: 70px 0 15px;
   font-size: 36px;
 }
+
 .order .order-empty .empty p {
   margin: 0 0 20px;
   font-size: 20px;
 }
+
 /* 订单为空的时候显示的内容CSS END */
 </style>
