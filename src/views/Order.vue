@@ -263,7 +263,37 @@ export default {
     },
     //  用户手动关闭订单
     delOrderStatus(val) {
-      console.log(val);
+      if (val == null) {
+        return this.$message.error("请选中订单");
+      }
+      this.$axios.put("/api/orders/UpdateUserOff",
+        { OrderID: val, UserId: this.$store.getters.getUser.userId }, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+        .then(res => {
+          if (res.data.code == 200) {
+
+            this.orders.map(item => {
+              if (item.orderId == val) {
+                item.status = "6";
+              }
+            });
+
+
+            // let index= this.orders.findIndex(item => item.orderId == val);
+            // // console.log(aaa);
+
+            // this.orders[index].status="6";
+
+
+            return this.$message.success(res.data.msg);
+          }
+          else {
+            return this.$message.error(res.data.msg);
+          }
+        })
     }
   },
 };
