@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:29:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-27 22:41:16
+ * @LastEditTime: 2023-03-12 04:47:58
  * @FilePath: \pineapple-store-vue\src\views\Home.vue
  * @Description: 
  * 
@@ -27,10 +27,7 @@
     <div class="block" @mouseleave="clover">
       <!-- 左边导航栏 -->
       <div id="leftcategoryList" class="animate__animated animate__backInLeft animate__fast">
-        <ul
-          v-for="(item, index) in leftcategoryDataList"
-          :key="item.categoryId"
-        >
+        <ul v-for="(item, index) in leftcategoryDataList" :key="item.categoryId">
           <li class="blocklist" @mouseenter="getProductStar(index)">
             <!-- <img width="10px" src="../assets/image/mi-icon.png"/> -->
             {{ item.categoryName }}
@@ -42,35 +39,20 @@
       <!-- 轮播图 -->
       <el-carousel height="460px" class="imgbox">
         <el-carousel-item v-for="item in carousel" :key="item.imgId">
-          <img
-            style="height: 460px; width: 1220px"
-            :src="item.imgUrl"
-            :alt="item.describes"
-          />
+          <img style="height: 460px; width: 1220px" :src="item.imgUrl" :alt="item.describes" />
         </el-carousel-item>
       </el-carousel>
       <!-- 轮播图END -->
 
-      <transition
-        enter-active-class="animate__animated animate__fadeInRight"
-        leave-active-class="animate__animated animate__zoomOutRight"
-      >
+      <transition enter-active-class="animate__animated animate__fadeInRight"
+        leave-active-class="animate__animated animate__zoomOutRight">
         <!-- 右边菜单栏 -->
-        <div
-          id="rightcategoryList"
-          @mouseleave="clover"
-          v-show="righcategoryListShow"
-        >
-          <div
-            v-for="(item, index) in rightcategoryDataListShow"
-            :key="item.productId"
-          >
-            <router-link
-              :to="{
-                path: '/goods/details',
-                query: { productID: item.productId },
-              }"
-            >
+        <div id="rightcategoryList" @mouseleave="clover" v-show="righcategoryListShow">
+          <div v-for="(item, index) in rightcategoryDataListShow" :key="item.productId">
+            <router-link :to="{
+              path: '/goods/details',
+              query: { productID: item.productId },
+            }">
               <p>
                 {{ item.productName }}
               </p>
@@ -120,78 +102,56 @@
             <div class="promo-list">
               <ul>
                 <li>
-                  <img
-                    src="https://s2.loli.net/2023/01/27/6OuzIKBMTNDjwed.webp"
-                    alt
-                  />
+                  <img src="https://s2.loli.net/2023/01/27/6OuzIKBMTNDjwed.webp" alt />
                 </li>
                 <li>
-                  <img
-                    src="https://s2.loli.net/2023/01/27/6LYxvjHhWSb4kXZ.webp"
-                    alt
-                  />
+                  <img src="https://s2.loli.net/2023/01/27/6LYxvjHhWSb4kXZ.webp" alt />
                 </li>
               </ul>
             </div>
 
             <div class="list">
-              <div
-                id="myList"
-                class="myList animate__animated animate__fadeInUpBig"
-              >
+              <div id="myList" class="myList animate__animated animate__fadeInUpBig">
                 <ul>
-                  <li  v-if="accessoryList.length > 1" v-for="(item, index) in accessoryList" :key="index">
-                    <router-link
-                      :to="{
-                        path: '/goods/details',
-                        query: { productID: item.productId },
-                      }"
-                    >
+                  <li v-if="accessoryList.length > 1" v-for="(item, index) in accessoryList" :key="index">
+                    <router-link :to="{
+                      path: '/goods/details',
+                      query: { productID: item.productId },
+                    }">
                       <img :src="item.imgList[0].url" alt />
                       <h2>{{ item.productName }}</h2>
                       <h3>{{ item.content }}</h3>
 
                       <div>
                         <p>
-                          <span
-                            >{{
-                              (
-                                item.skuList[0].originalPrice *
-                                item.skuList[0].discounts
-                              ).toFixed(2) == undefined
-                                ? 0
-                                : (
-                                    item.skuList[0].originalPrice *
-                                    item.skuList[0].discounts
-                                  ).toFixed(2)
-                            }}元</span
-                          >
-                          <span
-                            v-show="
-                              item.skuList[0].originalPrice !=
+                          <span>{{
+                            (
                               item.skuList[0].originalPrice *
-                                item.skuList[0].discounts
-                            "
-                            class="del"
-                          >
+                              item.skuList[0].discounts
+                            ).toFixed(2) == undefined
+                            ? 0
+                            : (
+                              item.skuList[0].originalPrice *
+                              item.skuList[0].discounts
+                            ).toFixed(2)
+                          }}元</span>
+                          <span v-show="
+                            item.skuList[0].originalPrice !=
+                            item.skuList[0].originalPrice *
+                            item.skuList[0].discounts
+                          " class="del">
                             {{
-                              item.skuList.length <= 0
-                                ? 0
-                                : item.skuList[0].originalPrice.toFixed(2)
-                            }}元</span
-                          >
+                              item.skuList.length <= 0 ? 0 : item.skuList[0].originalPrice.toFixed(2) }}元</span>
                         </p>
                       </div>
                     </router-link>
                   </li>
 
                   <li v-show="true" id="more">
-                    <router-link
-                      :to="{
-                        path: '/goods',
-                        query: { categoryID: categoryId },
-                      }"
-                    >
+                    <router-link :to="{
+                      path: '/goods',
+                      query: { categoryID: categoryId },
+                    }">
                       <!-- target='_blank' -->
                       浏览更多
                       <i class="el-icon-d-arrow-right"></i>
@@ -206,6 +166,9 @@
         <!-- 菠萝优选区域END -->
       </div>
     </div>
+
+
+    <el-backtop></el-backtop>
   </div>
 </template>
 <script>
@@ -327,8 +290,7 @@ export default {
         this.accessoryList = res.data;
 
 
-        if(this.accessoryList.length==0)
-        {
+        if (this.accessoryList.length == 0) {
           return this.$message.error("管理员未设置分类推荐");
         }
         if (this.categoryName.length == 3) {
@@ -339,7 +301,7 @@ export default {
           this.categoryName.push(this.accessoryList[i].categoryName);
         }
 
-        
+
 
         this.accessoryHotList = this.accessoryList[0].productList;
         this.protectingShellList = this.accessoryList[1].productList;
@@ -375,6 +337,7 @@ export default {
   transition: all 0.2s linear;
   position: relative;
 }
+
 .myList ul li:hover {
   z-index: 2;
   -webkit-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
@@ -382,6 +345,7 @@ export default {
   -webkit-transform: translate3d(0, -2px, 0);
   transform: translate3d(0, -2px, 0);
 }
+
 .myList ul li img {
   display: block;
   width: 160px;
@@ -389,6 +353,7 @@ export default {
   background: url(../assets/imgs/placeholder.png) no-repeat 50%;
   margin: 0 auto;
 }
+
 .myList ul li h2 {
   margin: 25px 10px 0;
   font-size: 14px;
@@ -399,6 +364,7 @@ export default {
   white-space: nowrap;
   overflow: hidden;
 }
+
 .myList ul li h3 {
   margin: 5px 10px;
   height: 18px;
@@ -410,36 +376,44 @@ export default {
   white-space: nowrap;
   overflow: hidden;
 }
+
 .myList ul li p {
   margin: 10px 10px 10px;
   text-align: center;
   color: #ff6700;
 }
+
 .myList ul li p .del {
   margin-left: 0.5em;
   color: #b0b0b0;
   text-decoration: line-through;
 }
+
 .myList #more {
   text-align: center;
   line-height: 280px;
 }
+
 .myList #more a {
   font-size: 18px;
   color: #333;
 }
+
 .myList #more a:hover {
   color: #ff6700;
 }
+
 .myList ul li .delete {
   position: absolute;
   top: 10px;
   right: 10px;
   display: none;
 }
+
 .myList ul li:hover .delete {
   display: block;
 }
+
 .myList ul li .delete:hover {
   color: #ff6700;
 }
