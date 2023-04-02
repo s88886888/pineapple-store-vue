@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-03-05 18:10:23
+ * @LastEditTime: 2023-04-02 15:41:01
  * @FilePath: \pineapple-store-vue\src\views\Order.vue
  * @Description: 我的订单页面组件
  * 
@@ -13,37 +13,64 @@
     <!-- 我的订单头部 -->
     <div class="order-header">
       <div class="order-header-content">
-        <p @click="getOrder" :style="
-          isColor == 0
-            ? 'font-size: 30px;  color: #ff6700;  margin-left: 30px'
-            : 'font-size: 30px; margin-left: 30px'
-        ">
+        <p
+          @click="getOrder"
+          :style="
+            isColor == 0
+              ? 'font-size: 30px;  color: #ff6700;  margin-left: 30px'
+              : 'font-size: 30px; margin-left: 30px'
+          "
+        >
           <i class="el-icon-s-order"></i>
           我的订单
         </p>
 
         <div>
-          <p class="order-status" :style="
-            isColor == 1
-              ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
-              : 'font-size: 20px; margin-left: 30px'
-          " @click="getOrderNoPay">
+          <p
+            class="order-status"
+            :style="
+              isColor == 1
+                ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
+                : 'font-size: 20px; margin-left: 30px'
+            "
+            @click="getOrderNoPay"
+          >
             待支付
           </p>
 
-          <p class="order-nostatus" :style="
-            isColor == 2
-              ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
-              : 'font-size: 20px; margin-left: 30px'
-          " @click="getseedOrder">
+          <p
+            class="order-status"
+            :style="
+              isColor == 4
+                ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
+                : 'font-size: 20px; margin-left: 30px'
+            "
+            @click="getSeedOrder"
+          >
+            待发货
+          </p>
+
+          <p
+            class="order-nostatus"
+            :style="
+              isColor == 2
+                ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
+                : 'font-size: 20px; margin-left: 30px'
+            "
+            @click="getseedOrder"
+          >
             待收货
           </p>
 
-          <p class="order-status" :style="
-            isColor == 3
-              ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
-              : 'font-size: 20px; margin-left: 30px'
-          " @click="getOffOrder">
+          <p
+            class="order-status"
+            :style="
+              isColor == 3
+                ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
+                : 'font-size: 20px; margin-left: 30px'
+            "
+            @click="getOffOrder"
+          >
             订单回收站
           </p>
         </div>
@@ -56,13 +83,15 @@
       <div class="content" v-for="(item, index) in orders" :key="index">
         <ul>
           <!-- 我的订单表头 -->
-          <li :class="
-            item.status === '1'
-              ? 'order-info nopay'
-              : item.status === '6'
+          <li
+            :class="
+              item.status === '1'
+                ? 'order-info nopay'
+                : item.status === '6'
                 ? 'order-info closepay'
                 : 'order-info'
-          ">
+            "
+          >
             <div class="order-id">订单编号: {{ item.orderId }}</div>
             <div class="order-time">
               订单时间: {{ item.createTime | dateFormat }}
@@ -81,20 +110,29 @@
           <!-- 我的订单表头END -->
 
           <!-- 订单列表 -->
-          <li class="product-list" v-for="(product, i) in item.productList" :key="i">
+          <li
+            class="product-list"
+            v-for="(product, i) in item.productList"
+            :key="i"
+          >
             <div class="pro-img">
-              <router-link :to="{
-                path: '/goods/details',
-                query: { productID: product.productId },
-              }">
+              <router-link
+                :to="{
+                  path: '/goods/details',
+                  query: { productID: product.productId },
+                }"
+              >
                 <img :src="product.productImg" />
               </router-link>
             </div>
             <div class="pro-name">
-              <router-link :to="{
-                path: '/goods/details',
-                query: { productID: product.productId },
-              }">{{ product.productName }}</router-link>
+              <router-link
+                :to="{
+                  path: '/goods/details',
+                  query: { productID: product.productId },
+                }"
+                >{{ product.productName }}</router-link
+              >
             </div>
             <div class="pro-price">{{ product.productPrice }}元</div>
             <div class="pro-num">{{ product.buyCounts }}</div>
@@ -113,12 +151,22 @@
           </div>
           <div class="order-bar-right">
             <span>
-              <el-button v-if="item.status === '1'" @click="payOrder(item.orderId)">支付</el-button>
-              <el-button v-if="item.status === '1'" style="padding-right: 20px"
-                @click="delOrderStatus(item.orderId)">取消</el-button>
+              <el-button
+                v-if="item.status === '1'"
+                @click="payOrder(item.orderId)"
+                >支付</el-button
+              >
+              <el-button
+                v-if="item.status === '1'"
+                style="padding-right: 20px"
+                @click="delOrderStatus(item.orderId)"
+                >取消</el-button
+              >
 
               <span class="total-price-title">合计：</span>
-              <span class="total-price">{{ total[index].totalPrice.toFixed(2) }}元</span>
+              <span class="total-price"
+                >{{ total[index].totalPrice.toFixed(2) }}元</span
+              >
             </span>
           </div>
           <!-- 订单列表END -->
@@ -222,6 +270,21 @@ export default {
       });
     },
 
+    //代发货
+    getSeedOrder() {
+      this.isColor = 4;
+      this.$axios
+        .get("/api/orders/getUserIdbyStatus", {
+          params: {
+            Id: this.$store.getters.getUser.userId,
+            status: "2",
+          },
+        })
+        .then((res) => {
+          this.orders = res.data.data;
+        });
+    },
+
     getOrderNoPay() {
       this.isColor = 1;
       this.$axios
@@ -229,7 +292,7 @@ export default {
           params: {
             Id: this.$store.getters.getUser.userId,
             status: "1",
-          }
+          },
         })
         .then((res) => {
           this.orders = res.data.data;
@@ -242,7 +305,7 @@ export default {
           params: {
             Id: this.$store.getters.getUser.userId,
             status: "3",
-          }
+          },
         })
         .then((res) => {
           this.orders = res.data.data;
@@ -255,7 +318,7 @@ export default {
           params: {
             Id: this.$store.getters.getUser.userId,
             status: "6",
-          }
+          },
         })
         .then((res) => {
           this.orders = res.data.data;
@@ -266,35 +329,35 @@ export default {
       if (val == null) {
         return this.$message.error("请选中订单");
       }
-      this.$axios.put("/api/orders/UpdateUserOff",
-        { OrderID: val, UserId: this.$store.getters.getUser.userId }, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      })
-        .then(res => {
+      this.$axios
+        .put(
+          "/api/orders/UpdateUserOff",
+          { OrderID: val, UserId: this.$store.getters.getUser.userId },
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          }
+        )
+        .then((res) => {
           if (res.data.code == 200) {
-
-            this.orders.map(item => {
+            this.orders.map((item) => {
               if (item.orderId == val) {
                 item.status = "6";
               }
             });
-
 
             // let index= this.orders.findIndex(item => item.orderId == val);
             // // console.log(aaa);
 
             // this.orders[index].status="6";
 
-
             return this.$message.success(res.data.msg);
-          }
-          else {
+          } else {
             return this.$message.error(res.data.msg);
           }
-        })
-    }
+        });
+    },
   },
 };
 </script>
