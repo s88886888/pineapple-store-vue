@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-04-02 15:41:01
+ * @LastEditTime: 2023-04-05 17:29:53
  * @FilePath: \pineapple-store-vue\src\views\Order.vue
  * @Description: 我的订单页面组件
  * 
@@ -60,6 +60,18 @@
             @click="getseedOrder"
           >
             待收货
+          </p>
+
+          <p
+            class="order-nostatus"
+            :style="
+              isColor == 5
+                ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
+                : 'font-size: 20px; margin-left: 30px'
+            "
+            @click="getOrderOn"
+          >
+            已完成
           </p>
 
           <p
@@ -152,12 +164,22 @@
           <div class="order-bar-right">
             <span>
               <el-button
-                v-if="item.status === '1'"
+                v-show="item.status === '1'"
                 @click="payOrder(item.orderId)"
                 >支付</el-button
               >
               <el-button
-                v-if="item.status === '1'"
+                v-show="item.status === '3'"
+                @click="confirmReceipt(item.orderId)"
+                >确认收货</el-button
+              >
+              <el-button
+                v-show="item.status === '3'"
+                @click="payOrder(item.orderId)"
+                >申请退货</el-button
+              >
+              <el-button
+                v-show="item.status === '1'"
                 style="padding-right: 20px"
                 @click="delOrderStatus(item.orderId)"
                 >取消</el-button
@@ -284,6 +306,20 @@ export default {
           this.orders = res.data.data;
         });
     },
+    //已完成
+    getOrderOn() {
+      this.isColor = 5;
+      this.$axios
+        .get("/api/orders/getUserIdbyStatus", {
+          params: {
+            Id: this.$store.getters.getUser.userId,
+            status: "5",
+          },
+        })
+        .then((res) => {
+          this.orders = res.data.data;
+        });
+    },
 
     getOrderNoPay() {
       this.isColor = 1;
@@ -352,6 +388,32 @@ export default {
 
             // this.orders[index].status="6";
 
+            return this.$message.success(res.data.msg);
+          } else {
+            return this.$message.error(res.data.msg);
+          }
+        });
+    },
+    confirmReceipt(orderId) {
+      if (orderId == null) {
+        return this.$message.error("订单错误");
+      }
+      this.$axios
+        .post(
+          "/api/orders/confirmReceipt",
+          {
+            orderId: orderId,
+            userId: this.$store.getters.getUser.userId,
+          },
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          }
+        )
+        .then((res) => {
+          if (res.data.code == 200) {
+            this.getseedOrder();
             return this.$message.success(res.data.msg);
           } else {
             return this.$message.error(res.data.msg);
