@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-04-05 17:29:53
+ * @LastEditTime: 2023-04-11 19:02:43
  * @FilePath: \pineapple-store-vue\src\views\Order.vue
  * @Description: 我的订单页面组件
  * 
@@ -174,10 +174,11 @@
                 >确认收货</el-button
               >
               <el-button
-                v-show="item.status === '3'"
-                @click="payOrder(item.orderId)"
+                v-show="item.status === '3' || item.status === '2'"
+                @click="showOrderReturn(item.orderId)"
                 >申请退货</el-button
               >
+              <!-- payOrder(item.orderId) -->
               <el-button
                 v-show="item.status === '1'"
                 style="padding-right: 20px"
@@ -206,6 +207,38 @@
       </div>
     </div>
     <!-- 订单为空的时候显示的内容END -->
+
+    <!-- 申请退货 -->
+
+    <el-dialog title="申请退货" :visible.sync="dialogVisible" width="30%">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="退货类型" prop="orderReturnDict">
+          <el-select
+            v-model="form.orderReturnDict"
+            placeholder="请选择退货类型"
+          >
+            <el-option
+              v-for="(item, index) in orderReturnSelect"
+              :key="index"
+              :label="item.desc"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="退货理由" prop="orderReturn">
+          <el-input
+            type="textarea"
+            v-model="form.orderReturn"
+            placeholder="请输入退货理由"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitForm('form')">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -214,9 +247,34 @@ export default {
   name: "Order",
   data() {
     return {
+      rules: {
+        orderReturn: [
+          { required: true, message: "请输入退货理由", trigger: "blur" },
+          {
+            min: 3,
+            max: 200,
+            message: "长度在 3 到 200 个字符",
+            trigger: "blur",
+          },
+        ],
+        orderReturnDict: [
+          { required: true, message: "请选择退货类型", trigger: "change" },
+        ],
+      },
+      dialogVisible: false,
       orders: [], // 订单列表
       total: [], // 每个订单的商品数量及总价列表
       isColor: 0,
+      form: {},
+      returnOrderId: null,
+      orderReturnSelect: [
+        { id: 1, desc: "不喜欢了" },
+        { id: 2, desc: "材质与商品描述不符" },
+        { id: 3, desc: "质量问题" },
+        { id: 4, desc: "做工有瑕疵" },
+        { id: 5, desc: "假冒品牌" },
+        { id: 6, desc: "其他原因" },
+      ],
     };
   },
   activated() {
@@ -244,6 +302,31 @@ export default {
   },
 
   methods: {
+    showOrderReturn(orderId) {
+      if (orderId == null) {
+        return this.$message.error("订单数据为空!");
+      } else {
+        this.returnOrderId = orderId;
+        this.dialogVisible = true;
+      }
+    },
+    submitForm(formName) {
+      const that = this;
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$set(this.form, "orderId", this.returnOrderId);
+
+          this.dialogVisible = false;
+
+          this.$axios.post("/api/orderReturn/", this.form).then((res) => {
+            return this.$message.success(res.msg);
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
     getOrder() {
       this.isColor = 0;
       this.$axios
@@ -414,6 +497,8 @@ export default {
         .then((res) => {
           if (res.data.code == 200) {
             this.getseedOrder();
+            this.getOrderOn();
+            this.isColor = 3;
             return this.$message.success(res.data.msg);
           } else {
             return this.$message.error(res.data.msg);
