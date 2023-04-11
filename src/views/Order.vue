@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-04-11 19:02:43
+ * @LastEditTime: 2023-04-11 20:12:39
  * @FilePath: \pineapple-store-vue\src\views\Order.vue
  * @Description: 我的订单页面组件
  * 
@@ -310,19 +310,25 @@ export default {
         this.dialogVisible = true;
       }
     },
-    submitForm(formName) {
+    async submitForm(formName) {
       const that = this;
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(async (valid) => {
         if (valid) {
           this.$set(this.form, "orderId", this.returnOrderId);
 
           this.dialogVisible = false;
 
-          this.$axios.post("/api/orderReturn/", this.form).then((res) => {
-            return this.$message.success(res.msg);
-          });
+          await this.$axios
+            .post("/api/orderReturn/", this.form)
+            .then(async (resp) => {
+              await this.$axios
+                .get("/api/orders/returnOrderUsert/" + this.returnOrderId)
+                .then((res) => {
+                  this.getOrder();
+                  return this.$message.success(res.msg);
+                });
+            });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
