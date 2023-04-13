@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-04-11 20:12:39
+ * @LastEditTime: 2023-04-13 17:53:59
  * @FilePath: \pineapple-store-vue\src\views\Order.vue
  * @Description: 我的订单页面组件
  * 
@@ -72,6 +72,18 @@
             @click="getOrderOn"
           >
             已完成
+          </p>
+
+          <p
+            class="order-nostatus"
+            :style="
+              isColor == 7
+                ? 'font-size: 20px;  color: #ff6700;  margin-left: 30px'
+                : 'font-size: 20px; margin-left: 30px'
+            "
+            @click="getOrderReturn"
+          >
+            申请退货
           </p>
 
           <p
@@ -174,9 +186,18 @@
                 >确认收货</el-button
               >
               <el-button
-                v-show="item.status === '3' || item.status === '2'"
+                v-show="
+                  (item.status === '3' && item.closeType != 5) ||
+                  item.status === '2'
+                "
                 @click="showOrderReturn(item.orderId)"
                 >申请退货</el-button
+              >
+
+              <el-button
+                v-show="item.closeType === 5"
+                @click="showOrderReturnByUser(item.orderId)"
+                >退货流程</el-button
               >
               <!-- payOrder(item.orderId) -->
               <el-button
@@ -239,6 +260,44 @@
         <el-button type="primary" @click="submitForm('form')">确 定</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog
+      title="退货流程"
+      :visible.sync="orderReturnByUserShow"
+      width="400"
+    >
+      <el-steps :active="activeReturn" :finish-status="finishStatus">
+        <el-step title="提交申请"></el-step>
+        <el-step title="管理员审核"></el-step>
+        <el-step title="退货成功"></el-step>
+      </el-steps>
+
+      <div style="margin-top: 20px">
+        <el-timeline :reverse="true">
+          <el-timeline-item :timestamp="orderReturnDesc.createTime | dateFormat"
+            >{{ orderReturnDesc.orderReturn }}
+          </el-timeline-item>
+
+          <el-timeline-item
+            v-show="orderReturnDesc.returnExa === 0"
+            :timestamp="orderReturnDesc.createTime | dateFormat"
+            >未发货,已为您急速退货</el-timeline-item
+          >
+
+          <el-timeline-item
+            v-show="orderReturnDesc.returnExa == 2"
+            :timestamp="orderReturnDesc.returnExaTime | dateFormat"
+            >管理员审核通过</el-timeline-item
+          >
+          <el-timeline-item
+            v-show="orderReturnDesc.returnExa == 3"
+            :timestamp="orderReturnDesc.returnExaTime | dateFormat"
+            >管理员审核驳回</el-timeline-item
+          >
+        </el-timeline>
+        <!-- <el-input v-model="orderReturnDesc" :disabled="true"></el-input> -->
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -247,6 +306,10 @@ export default {
   name: "Order",
   data() {
     return {
+      finishStatus: null,
+      orderReturnDesc: {},
+      orderReturnByUserShow: false,
+      activeReturn: 0,
       rules: {
         orderReturn: [
           { required: true, message: "请输入退货理由", trigger: "blur" },
@@ -302,6 +365,40 @@ export default {
   },
 
   methods: {
+    //qwq
+    showOrderReturnByUser(orderId) {
+      this.orderReturnByUserShow = true;
+
+      this.$axios.get("api/orders/getReturnDesc/" + orderId).then((res) => {
+        this.orderReturnDesc = res.data.data;
+        console.log(res.data.data);
+
+        if (res.data.data.returnExaTime == null) {
+          this.finishStatus = "success";
+          return (this.activeReturn = 3);
+        }
+
+        if (res.data.data.returnExa == 0) {
+          this.finishStatus = "success";
+          return (this.activeReturn = 3);
+        }
+        if (res.data.data.returnExa == 1) {
+          this.finishStatus = "success";
+          return (this.activeReturn = 1);
+        }
+        if (res.data.data.returnExa == 2) {
+          this.finishStatus = "success";
+          return (this.activeReturn = 3);
+        }
+
+        if (res.data.data.returnExa == 3) {
+          this.finishStatus = "error";
+          return (this.activeReturn = 2);
+        }
+      });
+
+      //  return this.activeReturn = 1;
+    },
     showOrderReturn(orderId) {
       if (orderId == null) {
         return this.$message.error("订单数据为空!");
@@ -403,6 +500,21 @@ export default {
           params: {
             Id: this.$store.getters.getUser.userId,
             status: "5",
+          },
+        })
+        .then((res) => {
+          this.orders = res.data.data;
+        });
+    },
+
+    //申请退货
+    getOrderReturn() {
+      this.isColor = 7;
+      this.$axios
+        .get("/api/orders/getUserIdbyStatus", {
+          params: {
+            Id: this.$store.getters.getUser.userId,
+            status: "7",
           },
         })
         .then((res) => {
