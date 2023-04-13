@@ -2,7 +2,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-04-13 17:53:59
+ * @LastEditTime: 2023-04-13 21:40:24
  * @FilePath: \pineapple-store-vue\src\views\Order.vue
  * @Description: 我的订单页面组件
  * 
@@ -371,12 +371,7 @@ export default {
 
       this.$axios.get("api/orders/getReturnDesc/" + orderId).then((res) => {
         this.orderReturnDesc = res.data.data;
-        console.log(res.data.data);
-
-        if (res.data.data.returnExaTime == null) {
-          this.finishStatus = "success";
-          return (this.activeReturn = 3);
-        }
+        // console.log(res.data.data);
 
         if (res.data.data.returnExa == 0) {
           this.finishStatus = "success";
@@ -395,6 +390,11 @@ export default {
           this.finishStatus = "error";
           return (this.activeReturn = 2);
         }
+
+        // if (res.data.data.returnExaTime == null) {
+        //   this.finishStatus = "success";
+        //   return (this.activeReturn = 3);
+        // }
       });
 
       //  return this.activeReturn = 1;
@@ -422,9 +422,9 @@ export default {
                 .get("/api/orders/returnOrderUsert/" + this.returnOrderId)
                 .then((res) => {
                   this.getOrder();
-                  return this.$message.success(res.msg);
                 });
             });
+          return this.$message.success("操作成功");
         } else {
           return false;
         }
