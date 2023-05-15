@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:29:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-27 21:34:36
+ * @LastEditTime: 2023-05-14 21:04:25
  * @FilePath: \pineapple-store-vue\src\views\Login.vue
  * @Description: 
  * 
@@ -328,7 +328,7 @@ export default {
       //登录
       loginList: {
         userName: "测试",
-        passWord: "990213",
+        passWord: "123456",
         type: [],
         loginToken: "",
       },
