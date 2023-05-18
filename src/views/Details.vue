@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-03-12 04:49:57
+ * @LastEditTime: 2023-05-18 20:23:15
  * @FilePath: \pineapple-store-vue\src\views\Details.vue
  * @Description: 
  * 
@@ -32,14 +32,16 @@
         <div class="list">
           <ul>
             <li>
-              <router-link to>概述</router-link>
+              <p style="color: #ff6700">
+                累计销售：{{ productDetails.soldNum }}
+              </p>
             </li>
-            <li>
+            <!-- <li>
               <router-link to>参数</router-link>
             </li>
             <li>
               <router-link to>用户评价</router-link>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
@@ -52,7 +54,10 @@
 
       <div class="blockdetalis animate__animated animate__zoomIn">
         <el-carousel height="560px" v-if="productDetails.imgList.length > 1">
-          <el-carousel-item v-for="item in productDetails.imgList" :key="item.id">
+          <el-carousel-item
+            v-for="item in productDetails.imgList"
+            :key="item.id"
+          >
             <img style="height: 560px" :src="item.url" />
           </el-carousel-item>
         </el-carousel>
@@ -71,31 +76,52 @@
           <p class="store">菠萝自营</p>
         </div>
         <div class="price">
-          <span>{{
-            (productDetails.originalPrice * productDetails.discounts).toFixed(
-              2
-            )
-          }}元</span>
-          <span v-show="
-            productDetails.originalPrice !=
-            productDetails.originalPrice * productDetails.discounts
-          " class="del">{{ (productDetails.originalPrice * 1).toFixed(2) }}元</span>
+          <span
+            >{{
+              (productDetails.originalPrice * productDetails.discounts).toFixed(
+                2
+              )
+            }}元</span
+          >
+          <span
+            v-show="
+              productDetails.originalPrice !=
+              productDetails.originalPrice * productDetails.discounts
+            "
+            class="del"
+            >{{ (productDetails.originalPrice * 1).toFixed(2) }}元</span
+          >
         </div>
 
         <div class="pro-sku animate__animated animate__zoomIn">
           <h2>选择套餐</h2>
-          <div v-if="productDetails.skuList.length >= 1" class="skubox" v-for="(item, index) in productDetails.skuList"
-            :key="item.skuId">
-            <div @click="
-              skuBorderShow(
-                index,
-                item.skuId,
-                item.discounts,
-                item.originalPrice,
-                item.skuName
-              )
-            " :class="index == skuIndex ? 'skuindex' : 'sku'">
-              <p>{{ item.skuName }}</p>
+          <div
+            v-if="productDetails.skuList.length >= 1"
+            class="skubox"
+            v-for="(item, index) in productDetails.skuList"
+            :key="item.skuId"
+          >
+            <div
+              v-if="item.stock > 0"
+              @click="
+                skuBorderShow(
+                  index,
+                  item.skuId,
+                  item.discounts,
+                  item.originalPrice,
+                  item.skuName
+                )
+              "
+              :class="index == skuIndex ? 'skuindex' : 'sku'"
+            >
+              <el-tooltip
+                class="item"
+                effect="dark"
+                :content="'剩余库存' + item.stock"
+                placement="top"
+              >
+                <p>{{ item.skuName }}</p>
+              </el-tooltip>
             </div>
           </div>
         </div>
@@ -103,15 +129,21 @@
         <div class="pro-list">
           <span class="pro-name">{{ productDetails.productName }}</span>
           <span class="pro-price">
-            <span>{{
-              (
+            <span
+              >{{
+                (
+                  productDetails.originalPrice * productDetails.discounts
+                ).toFixed(2)
+              }}元</span
+            >
+            <span
+              v-show="
+                productDetails.originalPrice !=
                 productDetails.originalPrice * productDetails.discounts
-              ).toFixed(2)
-            }}元</span>
-            <span v-show="
-              productDetails.originalPrice !=
-              productDetails.originalPrice * productDetails.discounts
-            " class="pro-del">{{ (productDetails.originalPrice * 1).toFixed(2) }}元</span>
+              "
+              class="pro-del"
+              >{{ (productDetails.originalPrice * 1).toFixed(2) }}元</span
+            >
           </span>
           <p class="price-sum">
             总计 :
@@ -125,7 +157,9 @@
 
         <!-- 内容区底部按钮 -->
         <div class="button">
-          <el-button class="shop-cart" :disabled="dis" @click="addShoppingCart">加入购物车</el-button>
+          <el-button class="shop-cart" :disabled="dis" @click="addShoppingCart"
+            >加入购物车</el-button
+          >
           <el-button class="like" @click="addCollect">喜欢</el-button>
         </div>
         <!-- 内容区底部按钮END -->
@@ -146,10 +180,9 @@
   </div>
 </template>
 
-
 <script>
 import { mapActions } from "vuex";
-import { Loading } from 'element-ui';
+import { Loading } from "element-ui";
 export default {
   data() {
     return {
@@ -221,15 +254,14 @@ export default {
           this.productDetails.skuId = res.data.data[0].skuList[0].skuId;
           this.productDetails.skuName = res.data.data[0].skuList[0].skuName;
           this.productDetails.url = res.data.data[0].imgList[0].url;
-          this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+          this.$nextTick(() => {
+            // 以服务的方式调用的 Loading 需要异步关闭
             loadingInstance.close();
           });
         })
         .catch((err) => {
           return Promise.reject(err);
         });
-
-
 
       const timer = setInterval(function () {
         const top =
@@ -242,8 +274,6 @@ export default {
           clearInterval(timer);
         }
       }, 20);
-
-
     },
 
     // 加入购物车
@@ -305,7 +335,7 @@ export default {
           productId: this.productID,
           categoryId: this.productDetails.categoryId,
           skuId: this.productDetails.skuId,
-          skuName: this.productDetails.skuName
+          skuName: this.productDetails.skuName,
         })
         .then((res) => {
           if (res.data.code == 200) {
