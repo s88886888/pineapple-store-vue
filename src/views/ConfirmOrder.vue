@@ -16,8 +16,8 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-10-20 01:47:02
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2022-12-11 11:24:11
- * @FilePath: \pineapplestoer_webui\src\views\ConfirmOrder.vue
+ * @LastEditTime: 2023-05-19 19:01:44
+ * @FilePath: \pineapple-store-vue\src\views\ConfirmOrder.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by Linson 854700937@qq.com, All Rights Reserved. 
@@ -165,7 +165,7 @@
               <span class="title">商品总价：</span>
               <span class="value">{{ getTotalPrice.toFixed(2) }}元</span>
             </li>
-            <li>
+            <!-- <li>
               <span class="title">活动优惠：</span>
               <span class="value">-0元</span>
             </li>
@@ -176,7 +176,7 @@
             <li>
               <span class="title">运费：</span>
               <span class="value">0元</span>
-            </li>
+            </li> -->
             <li class="total">
               <span class="title">应付总额：</span>
               <span class="value">

@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-11-06 20:29:37
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-05-14 21:04:25
+ * @LastEditTime: 2023-05-19 19:19:22
  * @FilePath: \pineapple-store-vue\src\views\Login.vue
  * @Description: 
  * 
@@ -39,7 +39,7 @@
           <p>账号登录</p>
         </div>
 
-        <div class="nav-right">
+        <!-- <div class="nav-right">
           <select id="language" class="nav-right font ch">
             <option selected>中文(简体)</option>
             <option>中文(繁体)</option>
@@ -52,7 +52,7 @@
             <li class="ch">帮助中心</li>
             <li>|</li>
           </ul>
-        </div>
+        </div> -->
       </div>
 
       <div id="main" class="userbox">
@@ -119,8 +119,8 @@
                 >登录</el-button
               >
               <div class="action">
-                <a id="a1" class="pointer">忘记密码？</a>
-                <a id="a2" class="pointer">手机号登录</a>
+                <!-- <a id="a1" class="pointer">忘记密码？</a> -->
+                <!-- <a id="a2" class="pointer">手机号登录</a> -->
               </div>
               <div id="other">
                 <!-- <p>请先验证</p> -->
@@ -226,7 +226,7 @@
                   @click="resgitsubmitForm('resgitList')"
                   >注册</el-button
                 >
-                <a id="a1" class="pointer">收不到验证码？</a>
+                <!-- <a id="a1" class="pointer">收不到验证码？</a> -->
               </div>
 
               <div id="other">

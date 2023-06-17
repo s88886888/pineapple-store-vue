@@ -16,7 +16,7 @@
  * @Author: Linson 854700937@qq.com
  * @Date: 2022-12-11 09:32:48
  * @LastEditors: Linson 854700937@qq.com
- * @LastEditTime: 2023-01-27 21:36:30
+ * @LastEditTime: 2023-05-20 21:52:22
  * @FilePath: \pineapple-store-vue\src\views\pay.vue
  * @Description: 
  * 
@@ -127,6 +127,7 @@
       </ul>
       <!-- <img></img> -->
       <span slot="footer" class="dialog-footer">
+        <el-button @click="payOrderTwo">备用支付</el-button>
         <el-button @click="alipay">继续前往支付</el-button>
         <el-button type="primary" @click="checkOrderPay"
           >我已经完成支付</el-button
@@ -185,6 +186,17 @@ export default {
   //     this.getOrderItem();
   //   },
   methods: {
+    payOrderTwo() {
+      this.$axios
+        .post("/api/orders/payOrderTwo/" + this.payOrderId)
+        .then((res) => {
+          // console.log(res);
+          if (res.data.code == 200) {
+            this.$router.push({ path: "/order" });
+            return this.$message.success(res.msg);
+          } 
+        });
+    },
     //获取用户地址
     getUserAddress() {
       if (this.payOrderId == "") {
